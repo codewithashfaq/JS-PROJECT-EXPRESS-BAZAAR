@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Express Bazaar | Contact</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Jost:wght@300;400;500;700&family=Poppins:wght@200;300;400;600&family=Quicksand:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" href="./src/style.css" as="style" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <script type="module" src="./src/auth.js" defer></script>
+    <style>
+      /* ---- Contact Page Specific Styles ---- */
+      .section-contact-hero {
+        background-image: linear-gradient(
+          to top right,
+          #3d86fa,
+          #4484fb,
+          #679eff,
+          #b3d2ff,
+          #ebf3fe
+        );
+        padding: 6.4rem 2.4rem;
+        text-align: center;
+      }
+
+      .section-contact-hero h1 {
+        font-size: 4.8rem;
+        color: #003b99;
+        font-family: "Jost", sans-serif;
+        margin-bottom: 1.2rem;
+      }
+
+      .section-contact-hero p {
+        font-size: 2rem;
+        color: #fff;
+      }
+
+      /* Contact Info Cards */
+      .section-contact-info {
+        background-color: var(--backgroundColor);
+        padding: 6.4rem 2.4rem 0 2.4rem;
+      }
+
+      .contact-info-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.4rem;
+        max-width: 100rem;
+        margin: 0 auto;
+      }
+
+      .contact-info-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 2.4rem;
+        text-align: center;
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 12px;
+      }
+
+      .contact-info-card .icon {
+        font-size: 3.2rem;
+        color: var(--main-color);
+        margin-bottom: 1.2rem;
+      }
+
+      .contact-info-card h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+        color: var(--textColor);
+      }
+
+      .contact-info-card p {
+        font-size: 1.5rem;
+        color: #6b7280;
+      }
+
+      /* Contact Form */
+      .section-contact-form {
+        background-color: var(--backgroundColor);
+        padding: 6.4rem 2.4rem;
+      }
+
+      .contact-form-wrapper {
+        max-width: 70rem;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 1.2rem;
+        padding: 4rem 3.2rem;
+        box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 24px;
+      }
+
+      .contact-form-wrapper h2 {
+        font-size: 2.8rem;
+        margin-bottom: 3.2rem;
+        color: var(--textColor);
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 2.4rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--textColor);
+        margin-bottom: 0.8rem;
+        text-transform: capitalize;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 1.2rem 1.6rem;
+        font-size: 1.6rem;
+        font-family: "Urbanist", sans-serif;
+        border: 1px solid var(--borderColor);
+        border-radius: 0.6rem;
+        background-color: var(--backgroundColor);
+        color: var(--textColor);
+        transition: border-color 0.2s;
+        letter-spacing: 0.05rem;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--main-color);
+        box-shadow: 0 0 0 3px rgba(83, 91, 242, 0.1);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 14rem;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.4rem;
+      }
+
+      .btn-contact-submit {
+        width: 100%;
+        padding: 1.4rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: "Urbanist", sans-serif;
+        border: none;
+        border-radius: 0.6rem;
+        background: var(--main-color);
+        color: #fff;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        margin-top: 0.8rem;
+        letter-spacing: 0.1rem;
+      }
+
+      .btn-contact-submit:hover {
+        background: #003b99;
+        transform: translateY(-2px);
+      }
+
+      .form-success {
+        display: none;
+        text-align: center;
+        padding: 2.4rem;
+        background: #f0fdf4;
+        border-radius: 0.8rem;
+        margin-top: 2.4rem;
+      }
+
+      .form-success i {
+        font-size: 4rem;
+        color: #22c55e;
+        margin-bottom: 1.2rem;
+      }
+
+      .form-success p {
+        font-size: 1.8rem;
+        color: #166534;
+        font-weight: 600;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .contact-info-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-form-wrapper {
+          padding: 2.4rem 1.6rem;
+        }
+
+        .section-contact-hero h1 {
+          font-size: 3.2rem;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .contact-info-cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ======== HEADER ======== -->
+    <header class="section-navbar">
+      <section class="top_txt">
+        <div class="head container">
+          <div class="head_txt">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+          </div>
+          <div class="sign_in_up_header">
+            <a
+              href="signIn.html"
+              class="sign-link btn-sign_in_up_header"
+              id="signInLink"
+              >SIGN IN</a
+            >
+            <a
+              href="signup.html"
+              class="sign-link btn-sign_in_up_header"
+              id="signUpLink"
+              >SIGN UP</a
+            >
+            <span
+              class="welcomeUser"
+              id="welcomeUser"
+              style="display: none"
+            ></span>
+            <button
+              id="logoutBtn"
+              class="btn-sign_in_up_header"
+              style="display: none"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </section>
+      <div class="container">
+        <div class="navbar-brand">
+          <a href="index.html">
+            <img
+              src="./public/images/express-bazaar-logo.png"
+              alt="express bazaar logo"
+            />
+          </a>
+        </div>
+        <nav class="navbar">
+          <ul>
+            <li class="nav-item"><a href="/" class="nav-link">home</a></li>
+            <li class="nav-item">
+              <a href="about.html" class="nav-link">about</a>
+            </li>
+            <li class="nav-item">
+              <a href="products.html" class="nav-link">products</a>
+            </li>
+            <li class="nav-item">
+              <a href="contact.html" class="nav-link">contact</a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="addToCart.html"
+                class="nav-link add-to-cart-button"
+                id="cartValue"
+              >
+                <i class="fa-solid fa-cart-shopping"> 0 </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!-- ======== END HEADER ======== -->
+
+    <!-- ======== CONTACT HERO ======== -->
+    <section class="section-contact-hero">
+      <h1>Contact Us</h1>
+      <p>We'd love to hear from you. Send us a message!</p>
+    </section>
+    <!-- ======== END CONTACT HERO ======== -->
+
+    <!-- ======== CONTACT INFO CARDS ======== -->
+    <section class="section-contact-info">
+      <div class="container">
+        <div class="contact-info-cards">
+          <div class="contact-info-card">
+            <div class="icon"><i class="fa-solid fa-envelope"></i></div>
+            <h3>Email Us</h3>
+            <p>ashfaaq.ib@gmail.com</p>
+          </div>
+          <div class="contact-info-card">
+            <div class="icon"><i class="fa-brands fa-github"></i></div>
+            <h3>GitHub</h3>
+            <p>github.com/codewithashfaq</p>
+          </div>
+          <div class="contact-info-card">
+            <div class="icon"><i class="fa-brands fa-linkedin"></i></div>
+            <h3>LinkedIn</h3>
+            <p>linkedin.com/in/ashfaaq-khan</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ======== END CONTACT INFO CARDS ======== -->
+
+    <!-- ======== CONTACT FORM ======== -->
+    <section class="section-contact-form">
+      <div class="container">
+        <div class="contact-form-wrapper">
+          <h2>Send a Message</h2>
+          <form id="contactForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" placeholder="John" required />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" placeholder="Doe" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="john@example.com"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input
+                type="text"
+                id="subject"
+                placeholder="How can we help?"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                placeholder="Write your message here..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-contact-submit">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+          <div class="form-success" id="formSuccess">
+            <i class="fa-solid fa-circle-check"></i>
+            <p>Message sent successfully! We'll get back to you soon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ======== END CONTACT FORM ======== -->
+
+    <!-- ======== FOOTER ======== -->
+    <footer class="section-footer">
+      <div class="footer-container container">
+        <div class="content_1">
+          <img src="./public/images/express-bazaar-logo.png" alt="logo" />
+          <p>
+            Welcome to Express Bazaar, your ultimate destination for
+            cutting-edge gadgets!
+          </p>
+          <img src="https://i.postimg.cc/Nj9dgJ98/cards.png" alt="cards" />
+        </div>
+        <div class="content_2">
+          <h4>SHOPPING</h4>
+          <a href="#">Computer Store</a>
+          <a href="#">Laptop Store</a>
+          <a href="#">Accessories</a>
+          <a href="#">Sales & Discount</a>
+        </div>
+        <div class="content_3">
+          <h4>EXPERIENCE</h4>
+          <a href="./contact.html">Contact Us</a>
+          <a href="">Payment Method</a>
+          <a href="">Delivery</a>
+          <a href="">Return and Exchange</a>
+        </div>
+        <div class="content_4">
+          <h4>NEWSLETTER</h4>
+          <p>Be the first to know about new<br />arrivals, sales & promos!</p>
+          <div class="f-mail">
+            <input type="email" placeholder="Your Email" />
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="f-design">
+        <div class="f-design-txt">
+          <p>Design and Code by Ashfaq Khan</p>
+        </div>
+      </div>
+    </footer>
+    <!-- ======== END FOOTER ======== -->
+
+    <script>
+      // Simple form submit handler
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          document.getElementById("formSuccess").style.display = "block";
+          this.reset();
+          setTimeout(() => {
+            document.getElementById("formSuccess").style.display = "none";
+          }, 4000);
+        });
+    </script>
+  </body>
+</html>

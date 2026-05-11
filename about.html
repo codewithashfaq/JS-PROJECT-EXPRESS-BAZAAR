@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Express Bazaar | About</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Jost:wght@300;400;500;700&family=Poppins:wght@200;300;400;600&family=Quicksand:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" href="./src/style.css" as="style" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <script type="module" src="./src/auth.js" defer></script>
+    <style>
+      /* ---- About Page Specific Styles ---- */
+      .section-about-hero {
+        background-image: linear-gradient(
+          to top right,
+          #3d86fa,
+          #4484fb,
+          #679eff,
+          #b3d2ff,
+          #ebf3fe
+        );
+        padding: 6.4rem 2.4rem;
+        text-align: center;
+      }
+
+      .section-about-hero h1 {
+        font-size: 4.8rem;
+        color: #003b99;
+        font-family: "Jost", sans-serif;
+        margin-bottom: 1.6rem;
+      }
+
+      .section-about-hero p {
+        font-size: 2rem;
+        color: #fff;
+        max-width: 60rem;
+        margin: 0 auto;
+      }
+
+      /* Project Info Cards */
+      .section-project-info {
+        background-color: var(--backgroundSecondary);
+        padding: 6.4rem 2.4rem;
+      }
+
+      .section-project-info h2 {
+        font-size: 3.2rem;
+        text-align: center;
+        margin-bottom: 4.8rem;
+        color: var(--textColor);
+      }
+
+      .project-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3.2rem;
+        max-width: 120rem;
+        margin: 0 auto;
+      }
+
+      .project-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 3.2rem 2.4rem;
+        box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 16px;
+        text-align: center;
+        transition: transform 0.2s ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .project-card .icon {
+        font-size: 3.6rem;
+        color: var(--main-color);
+        margin-bottom: 1.6rem;
+      }
+
+      .project-card h3 {
+        font-size: 2rem;
+        margin-bottom: 1.2rem;
+        color: var(--textColor);
+      }
+
+      .project-card p {
+        font-size: 1.6rem;
+        color: #6b7280;
+        line-height: 1.7;
+      }
+
+      /* Tech Stack */
+      .section-tech-stack {
+        padding: 6.4rem 2.4rem;
+        background-color: var(--backgroundColor);
+      }
+
+      .section-tech-stack h2 {
+        font-size: 3.2rem;
+        text-align: center;
+        margin-bottom: 4rem;
+        color: var(--textColor);
+      }
+
+      .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.6rem;
+        max-width: 80rem;
+        margin: 0 auto;
+      }
+
+      .tech-tag {
+        background-color: var(--supporting-color);
+        color: var(--main-color);
+        font-weight: 700;
+        font-size: 1.6rem;
+        padding: 0.8rem 2rem;
+        border-radius: 10rem;
+        letter-spacing: 0.1rem;
+      }
+
+      /* Developer Section */
+      .section-developer {
+        background-image: linear-gradient(
+          to top right,
+          #3d86fa,
+          #4484fb,
+          #679eff,
+          #b3d2ff,
+          #ebf3fe
+        );
+        padding: 6.4rem 2.4rem;
+      }
+
+      .developer-card {
+        max-width: 70rem;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 1.2rem;
+        padding: 4rem 3.2rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 3.2rem;
+        align-items: center;
+      }
+
+      .developer-avatar {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        background: var(--supporting-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4rem;
+        color: var(--main-color);
+      }
+
+      .developer-info h3 {
+        font-size: 2.4rem;
+        margin-bottom: 0.8rem;
+        color: var(--textColor);
+      }
+
+      .developer-info .role {
+        font-size: 1.6rem;
+        color: var(--main-color);
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.1rem;
+      }
+
+      .developer-info p {
+        font-size: 1.6rem;
+        color: #6b7280;
+        line-height: 1.7;
+      }
+
+      .developer-links {
+        display: flex;
+        gap: 1.6rem;
+        margin-top: 1.6rem;
+      }
+
+      .developer-links a {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--main-color);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .developer-links a:hover {
+        color: #003b99;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .project-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .developer-card {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .developer-avatar {
+          margin: 0 auto;
+        }
+
+        .developer-links {
+          justify-content: center;
+        }
+
+        .section-about-hero h1 {
+          font-size: 3.2rem;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .project-cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ======== HEADER ======== -->
+    <header class="section-navbar">
+      <section class="top_txt">
+        <div class="head container">
+          <div class="head_txt">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+          </div>
+          <div class="sign_in_up_header">
+            <a
+              href="signIn.html"
+              class="sign-link btn-sign_in_up_header"
+              id="signInLink"
+              >SIGN IN</a
+            >
+            <a
+              href="signup.html"
+              class="sign-link btn-sign_in_up_header"
+              id="signUpLink"
+              >SIGN UP</a
+            >
+            <span
+              class="welcomeUser"
+              id="welcomeUser"
+              style="display: none"
+            ></span>
+            <button
+              id="logoutBtn"
+              class="btn-sign_in_up_header"
+              style="display: none"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </section>
+      <div class="container">
+        <div class="navbar-brand">
+          <a href="index.html">
+            <img
+              src="./public/images/express-bazaar-logo.png"
+              alt="express bazaar logo"
+            />
+          </a>
+        </div>
+        <nav class="navbar">
+          <ul>
+            <li class="nav-item"><a href="/" class="nav-link">home</a></li>
+            <li class="nav-item">
+              <a href="about.html" class="nav-link">about</a>
+            </li>
+            <li class="nav-item">
+              <a href="products.html" class="nav-link">products</a>
+            </li>
+            <li class="nav-item">
+              <a href="contact.html" class="nav-link">contact</a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="addToCart.html"
+                class="nav-link add-to-cart-button"
+                id="cartValue"
+              >
+                <i class="fa-solid fa-cart-shopping"> 0 </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!-- ======== END HEADER ======== -->
+
+    <!-- ======== ABOUT HERO ======== -->
+    <section class="section-about-hero">
+      <h1>About Express Bazaar</h1>
+      <p>
+        Your ultimate destination for cutting-edge gadgets — built with Vanilla
+        JavaScript, HTML5, and CSS3.
+      </p>
+    </section>
+    <!-- ======== END ABOUT HERO ======== -->
+
+    <!-- ======== PROJECT INFO ======== -->
+    <section class="section-project-info">
+      <div class="container">
+        <h2>What is Express Bazaar?</h2>
+        <div class="project-cards">
+          <div class="project-card">
+            <div class="icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <h3>E-Commerce Platform</h3>
+            <p>
+              A fully functional e-commerce website featuring dynamic product
+              rendering, add-to-cart functionality, and cart management — all
+              built without any framework.
+            </p>
+          </div>
+          <div class="project-card">
+            <div class="icon"><i class="fa-solid fa-database"></i></div>
+            <h3>localStorage Integration</h3>
+            <p>
+              Cart data persists using localStorage so your items are saved even
+              after refreshing the page. No backend needed — pure frontend
+              magic.
+            </p>
+          </div>
+          <div class="project-card">
+            <div class="icon"><i class="fa-solid fa-lock"></i></div>
+            <h3>Auth Flow</h3>
+            <p>
+              Sign In and Sign Up pages with basic authentication logic.
+              Protected cart — users must log in before adding items to cart.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ======== END PROJECT INFO ======== -->
+
+    <!-- ======== TECH STACK ======== -->
+    <section class="section-tech-stack">
+      <div class="container">
+        <h2>Tech Stack Used</h2>
+        <div class="tech-tags">
+          <span class="tech-tag">HTML5</span>
+          <span class="tech-tag">CSS3</span>
+          <span class="tech-tag">Vanilla JavaScript</span>
+          <span class="tech-tag">Vite</span>
+          <span class="tech-tag">localStorage</span>
+          <span class="tech-tag">sessionStorage</span>
+          <span class="tech-tag">DOM Manipulation</span>
+          <span class="tech-tag">Event Handling</span>
+          <span class="tech-tag">Modular JS</span>
+          <span class="tech-tag">Responsive Design</span>
+          <span class="tech-tag">Font Awesome</span>
+          <span class="tech-tag">Google Fonts</span>
+        </div>
+      </div>
+    </section>
+    <!-- ======== END TECH STACK ======== -->
+
+    <!-- ======== DEVELOPER ======== -->
+    <section class="section-developer">
+      <div class="container">
+        <div class="developer-card">
+          <div class="developer-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="developer-info">
+            <h3>Ashfaq Khan</h3>
+            <p class="role">React Developer | Open to Work</p>
+            <p>
+              3.5+ years of professional experience at Capgemini India in
+              software deployments, production support, and UAT testing for
+              Fortune 500 clients. Skilled in React.js, JavaScript, HTML5, CSS3,
+              and modern frontend tools.
+            </p>
+            <div class="developer-links">
+              <a href="https://github.com/codewithashfaq" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/ashfaaq-khan/"
+                target="_blank"
+              >
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ======== END DEVELOPER ======== -->
+
+    <!-- ======== FOOTER ======== -->
+    <footer class="section-footer">
+      <div class="footer-container container">
+        <div class="content_1">
+          <img src="./public/images/express-bazaar-logo.png" alt="logo" />
+          <p>
+            Welcome to Express Bazaar, your ultimate destination for
+            cutting-edge gadgets!
+          </p>
+          <img src="https://i.postimg.cc/Nj9dgJ98/cards.png" alt="cards" />
+        </div>
+        <div class="content_2">
+          <h4>SHOPPING</h4>
+          <a href="#">Computer Store</a>
+          <a href="#">Laptop Store</a>
+          <a href="#">Accessories</a>
+          <a href="#">Sales & Discount</a>
+        </div>
+        <div class="content_3">
+          <h4>EXPERIENCE</h4>
+          <a href="./contact.html">Contact Us</a>
+          <a href="">Payment Method</a>
+          <a href="">Delivery</a>
+          <a href="">Return and Exchange</a>
+        </div>
+        <div class="content_4">
+          <h4>NEWSLETTER</h4>
+          <p>Be the first to know about new<br />arrivals, sales & promos!</p>
+          <div class="f-mail">
+            <input type="email" placeholder="Your Email" />
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="f-design">
+        <div class="f-design-txt">
+          <p>Design and Code by Ashfaq Khan</p>
+        </div>
+      </div>
+    </footer>
+    <!-- ======== END FOOTER ======== -->
+  </body>
+</html>
