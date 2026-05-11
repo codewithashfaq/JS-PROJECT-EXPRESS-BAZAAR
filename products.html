@@ -17,51 +17,11 @@
       href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Jost:wght@300;400;500;700&family=Poppins:wght@200;300;400;600&family=Quicksand:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" href="./src/style.css" as="style" />
     <link rel="stylesheet" href="./src/style.css" />
     <script type="module" src="./src/main.js" defer></script>
     <script type="module" src="./src/auth.js" defer></script>
-    <style>
-      /* ---- Products Page Specific Styles ---- */
-      .section-products-hero {
-        background-image: linear-gradient(
-          to top right,
-          #3d86fa,
-          #4484fb,
-          #679eff,
-          #b3d2ff,
-          #ebf3fe
-        );
-        padding: 4.8rem 2.4rem;
-        text-align: center;
-      }
-
-      .section-products-hero h1 {
-        font-size: 4rem;
-        color: #003b99;
-        font-family: "Jost", sans-serif;
-        margin-bottom: 1.2rem;
-      }
-
-      .section-products-hero p {
-        font-size: 1.8rem;
-        color: #fff;
-      }
-
-      .section-products-page {
-        padding: 4.8rem 2.4rem;
-        background-color: var(--backgroundColor);
-      }
-
-      .products-page-heading {
-        font-size: 2.8rem;
-        margin-bottom: 3.2rem;
-        color: var(--textColor);
-      }
-    </style>
   </head>
   <body>
-    <!-- ======== HEADER ======== -->
     <header class="section-navbar">
       <section class="top_txt">
         <div class="head container">
@@ -98,12 +58,11 @@
       </section>
       <div class="container">
         <div class="navbar-brand">
-          <a href="index.html">
-            <img
+          <a href="index.html"
+            ><img
               src="./public/images/express-bazaar-logo.png"
               alt="express bazaar logo"
-            />
-          </a>
+          /></a>
         </div>
         <nav class="navbar">
           <ul>
@@ -122,24 +81,19 @@
                 href="addToCart.html"
                 class="nav-link add-to-cart-button"
                 id="cartValue"
+                ><i class="fa-solid fa-cart-shopping"> 0 </i></a
               >
-                <i class="fa-solid fa-cart-shopping"> 0 </i>
-              </a>
             </li>
           </ul>
         </nav>
       </div>
     </header>
-    <!-- ======== END HEADER ======== -->
 
-    <!-- ======== PRODUCTS HERO ======== -->
-    <section class="section-products-hero">
+    <section class="page-hero">
       <h1>Our Products</h1>
       <p>Explore our full range of cutting-edge gadgets</p>
     </section>
-    <!-- ======== END PRODUCTS HERO ======== -->
 
-    <!-- ======== PRODUCTS LISTING ======== -->
     <section class="section-products-page">
       <div class="container">
         <h2 class="products-page-heading">All Products</h2>
@@ -147,7 +101,6 @@
       </div>
     </section>
 
-    <!-- Product Template -->
     <template id="productTemplate">
       <div class="cards" id="cardValue">
         <article class="information">
@@ -157,11 +110,9 @@
           </div>
           <h2 class="productName"></h2>
           <div class="productRating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i
+            ><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i
+            ><i class="fa-solid fa-star"></i>
           </div>
           <div class="productDescription"></div>
           <div class="productPriceElement">
@@ -186,9 +137,7 @@
         </article>
       </div>
     </template>
-    <!-- ======== END PRODUCTS LISTING ======== -->
 
-    <!-- ======== FOOTER ======== -->
     <footer class="section-footer">
       <div class="footer-container container">
         <div class="content_1">
@@ -223,11 +172,8 @@
         </div>
       </div>
       <div class="f-design">
-        <div class="f-design-txt">
-          <p>Design and Code by Ashfaq Khan</p>
-        </div>
+        <div class="f-design-txt"><p>Design and Code by Ashfaq Khan</p></div>
       </div>
     </footer>
-    <!-- ======== END FOOTER ======== -->
   </body>
 </html>
