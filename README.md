@@ -64,3 +64,4 @@ The project demonstrates **core front-end development concepts** such as DOM man
 ## Author
 
 **Ashfaq Khan** — Frontend Developer
+# trigger rebuild
