@@ -1,118 +1,206 @@
-/* ============================================
-   EXPRESS BAZAAR — MAIN STYLESHEET
+/* ============================================================
+   EXPRESS BAZAAR — style.css
    Author: Ashfaq Khan
-   Description: Global styles + all page styles
-============================================ */
+   Description: The ONE stylesheet for the entire website.
+                Every page (index, products, cart, about,
+                contact, sign-in, sign-up) uses this file.
 
-/* ============================================
+   HOW THIS FILE IS ORGANIZED (Table of Contents):
+   ─────────────────────────────────────────────────
+   1.  CSS Reset & Root Variables
+   2.  Typography
+   3.  Layout Utilities
+   4.  Reusable Components (Buttons, Headings)
+   5.  Toast Notifications
+   6.  Top Bar + Navbar
+   7.  Sign In / Sign Up Pages
+   7a. Auth Buttons (CSS-controlled show/hide — NO FLICKER!)
+   8.  Hero Section (Home Page)
+   9.  Page Hero (Shared — About, Products, Contact)
+   10. Extra Product Section (Home)
+   11. Policy Section
+   12. Why Choose Us
+   13. Footer
+   14. Product Cards
+   15. Cart Page (addToCart.html)
+   16. About Page
+   17. Products Page
+   18. Contact Page
+   19. Loader
+   20. Media Queries (Responsive Breakpoints)
+       — 1380px, 1220px, 1100px, 980px, 768px, 600px, 480px
+============================================================ */
+
+/* ============================================================
    1. CSS RESET & ROOT VARIABLES
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Remove all default browser styles so we start
+            with a "clean slate". Every browser has its own
+            default margin, padding, and box model — this
+            section normalizes them all.
 
-/* Express Bazaar — v1.0 */
+   WHY box-sizing: border-box?
+   By default, when you set width: 100px on an element,
+   padding and borders are ADDED ON TOP of that width.
+   This causes elements to be wider than expected.
+   "border-box" makes padding/border INCLUDED in the width.
+   So width: 100px always stays 100px — much more predictable!
+============================================================ */
 
+/* The * selector targets EVERY element on the page */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0; /* Remove default margins from all elements */
+  padding: 0; /* Remove default padding from all elements */
+  box-sizing: border-box; /* Include padding + border IN the width/height */
 }
 
+/* ─── :root — Global CSS Custom Properties (Variables) ──────
+   PURPOSE: Define reusable color and style values once.
+   WHY: If you want to change the brand color from dark to
+        another color, you only change it HERE — and it
+        updates everywhere automatically!
+
+   Usage: var(--buttonColor) anywhere in the CSS
+   ─────────────────────────────────────────────────────────── */
 :root {
+  /* Global font settings applied across the whole site */
   font-family: "Urbanist", sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5; /* Space between lines of text */
+  font-weight: 400; /* Normal (not bold) by default */
+  font-synthesis: none; /* Prevent browser from faking bold/italic */
 
-  --buttonColor: #2a2c30;
-  --secondaryColor: #4b4f56;
-  --borderColor: #e3eaf0;
-  --backgroundColor: #f7f7f7;
-  --backgroundSecondary: #fefefe;
-  --textColor: #1e1f23;
-  --anchorColor: #535bf2;
-  --main-color: #535bf2;
-  --supporting-color: #ebf3fe;
-  --white-color: #fff;
-  --para-color: #4b4f56;
-  --heading-color: #1e1f23;
-  --bnt-hover-bg-color: #003b99;
-  --btn-box-shadow: 0 4px 12px rgba(83, 91, 242, 0.3);
+  /* These two improve font rendering on screens */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; /* Smooth fonts on Mac/Chrome */
+  -moz-osx-font-smoothing: grayscale; /* Smooth fonts on Firefox/Mac */
+
+  /* ─── BRAND COLOR PALETTE ─────────────────────────────── */
+  --buttonColor: #2a2c30; /* Dark button / navbar background */
+  --secondaryColor: #4b4f56; /* Muted text / secondary elements */
+  --borderColor: #e3eaf0; /* Light grey borders */
+  --backgroundColor: #f7f7f7; /* Main page background (off-white) */
+  --backgroundSecondary: #fefefe; /* Card / section background (near white) */
+  --textColor: #1e1f23; /* Main text (near black) */
+  --anchorColor: #535bf2; /* Link color (blue-purple) */
+  --main-color: #535bf2; /* Primary brand color (blue-purple) */
+  --supporting-color: #ebf3fe; /* Light blue background for highlights */
+  --white-color: #fff; /* Pure white */
+  --para-color: #4b4f56; /* Paragraph text (dark grey) */
+  --heading-color: #1e1f23; /* Heading text (near black) */
+  --bnt-hover-bg-color: #003b99; /* Button hover background (dark blue) */
+  --btn-box-shadow: 0 4px 12px rgba(83, 91, 242, 0.3); /* Button hover shadow */
 }
 
+/* ─── html element ──────────────────────────────────────────
+   font-size: 62.5% is a classic developer trick!
+
+   By default browsers set 1rem = 16px.
+   62.5% of 16px = 10px.
+   So now: 1rem = 10px — much easier math!
+   Example: Want 16px font? Write 1.6rem. Want 24px? Write 2.4rem.
+   ─────────────────────────────────────────────────────────── */
 html {
-  font-size: 62.5%;
+  font-size: 62.5%; /* Makes 1rem = 10px for easy calculations */
   color: var(--textColor);
 }
 
+/* ─── body ──────────────────────────────────────────────────
+   FIX APPLIED: Added overflow-x: hidden to prevent the
+   horizontal scrollbar on mobile devices.
+
+   WHY IT HAPPENS: When any child element is wider than the
+   viewport (screen), a horizontal scrollbar appears.
+   overflow-x: hidden hides that extra width.
+   ─────────────────────────────────────────────────────────── */
 body {
-  margin: 0 auto;
-  padding: 0 32px;
-  min-width: 320px;
+  margin: 0 auto; /* Center the body horizontally */
+  padding: 0 32px; /* Add side breathing room */
+  min-width: 320px; /* Smallest supported screen = 320px */
   background-color: var(--backgroundColor);
+  overflow-x: hidden; /* ✅ FIX: Prevents horizontal scrollbar on mobile */
 }
 
-/* ============================================
+/* ============================================================
    2. TYPOGRAPHY
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Set consistent font sizes, weights, colors, and
+            spacing for all text elements across the site.
 
+   WHY SEPARATE FROM :root?
+   :root handles variables. This section APPLIES those
+   variables to actual HTML elements.
+============================================================ */
+
+/* All heading levels share these base styles */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  line-height: 1.1;
-  color: var(--textColor);
+  line-height: 1.1; /* Tighter line spacing for headings */
+  color: var(--textColor); /* All headings use the main text color */
 }
 
 h1 {
-  font-size: 3.2rem;
+  font-size: 3.2rem; /* = 32px (because 1rem = 10px) */
 }
 h2 {
   font-size: 3.2rem;
 }
 
+/* Paragraphs, list items, anchor links, and labels all share
+   these base text styles for consistency */
 p,
 li,
 a,
 label {
-  font-size: 1.8rem;
-  letter-spacing: 0.1rem;
-  color: var(--para-color);
-  line-height: 1.5;
-  font-weight: 400;
+  font-size: 1.8rem; /* = 18px */
+  letter-spacing: 0.1rem; /* Slight character spacing for readability */
+  color: var(--para-color); /* Muted dark grey — easy on the eyes */
+  line-height: 1.5; /* Space between lines */
+  font-weight: 400; /* Normal weight (not bold) */
 }
 
 li {
-  list-style: none;
+  list-style: none; /* Remove the default bullet points from lists */
 }
 
 a {
-  color: #646cff;
-  text-decoration: none;
+  color: #646cff; /* Default link color — a bright blue-purple */
+  text-decoration: none; /* Remove the underline from links */
 }
 a:hover {
-  color: #535bf2;
+  color: #535bf2; /* Slightly darker blue-purple on hover */
 }
 
+/* Styling for all placeholder text inside input fields */
 ::placeholder {
   font-family: "Urbanist", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 }
 
-/* ============================================
+/* ============================================================
    3. LAYOUT UTILITIES
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Reusable layout classes used across all pages.
+            These are "helper classes" — you add them to HTML
+            elements to apply common layout patterns quickly.
+============================================================ */
 
+/* .container — Centers content and limits maximum width.
+   WHY max-width: 142rem?
+   On very wide screens (like 27" monitors), content would
+   stretch too wide and become hard to read. We cap it at
+   1420px and center it with margin: 0 auto. */
 .container {
-  max-width: 142rem;
-  margin: 0 auto;
-  padding: 9.6rem 2.4rem;
+  max-width: 142rem; /* = 1420px — content never gets wider than this */
+  margin: 0 auto; /* Center the container horizontally */
+  padding: 9.6rem 2.4rem; /* Vertical + horizontal breathing room */
 }
 
+/* Some specific section containers need less top padding */
 .section-extra-product .container:first-child,
 .section-blog .container:first-child,
 .section-policy .container:first-child,
@@ -121,246 +209,342 @@ a:hover {
 .section-contact .container:first-child,
 footer .container:first-child {
   padding: 6.4rem 0 2.4rem 0;
+  /* These sections look better with reduced top padding */
 }
 
+/* ─── CSS Grid Utility Classes ───────────────────────────────
+   PURPOSE: Quick-apply grid layouts to any element.
+   These classes eliminate repetitive CSS by creating
+   reusable grid patterns.
+
+   Usage example in HTML:
+   <div class="grid grid-two--cols"> → creates a 2-column grid
+   ─────────────────────────────────────────────────────────── */
 .grid {
-  display: grid;
+  display: grid; /* Activates CSS Grid on this element */
 }
 .grid-two--cols {
   grid-template-columns: repeat(2, 1fr);
+  /* Creates 2 equal columns. "1fr" = 1 fraction of available space */
 }
 .grid-three--cols {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
 }
 .grid-three-cols {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* Alias — same as above */
 }
 .grid-four--cols {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
 }
 .grid-four-cols {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* Alias — same as above */
 }
 
-/* ============================================
+/* ============================================================
    4. REUSABLE COMPONENTS
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles for elements that appear repeatedly across
+            multiple pages — buttons, section titles, etc.
+============================================================ */
 
+/* .btn — The primary call-to-action button style */
 .btn {
-  display: inline-block;
-  padding: 1.2rem 3.2rem;
-  background-color: var(--main-color);
-  color: var(--white-color);
-  text-transform: capitalize;
-  border-radius: 0.6rem;
-  -webkit-border-radius: 0.6rem;
-  -moz-border-radius: 0.6rem;
+  display: inline-block; /* Allows padding and sizing */
+  padding: 1.2rem 3.2rem; /* Vertical + horizontal padding */
+  background-color: var(--main-color); /* Blue-purple fill */
+  color: var(--white-color); /* White text */
+  text-transform: capitalize; /* First letter caps */
+  border-radius: 0.6rem; /* Rounded corners */
+  -webkit-border-radius: 0.6rem; /* Safari compatibility */
+  -moz-border-radius: 0.6rem; /* Old Firefox compatibility */
 }
 
 .btn:hover {
-  background-color: var(--bnt-hover-bg-color);
-  box-shadow: var(--btn-box-shadow);
-  cursor: pointer;
+  background-color: var(--bnt-hover-bg-color); /* Darker blue on hover */
+  box-shadow: var(--btn-box-shadow); /* Glow effect on hover */
+  cursor: pointer; /* Show pointer hand cursor */
 }
 
+/* Accessibility: Shows a visible outline when navigating
+   with keyboard (Tab key). Important for accessibility! */
 .btn:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--para-color);
 }
 
+/* Common title style used in multiple sections */
 .section-common--title {
-  font-size: 2rem;
-  margin: 2.4rem 0 1.2rem 0;
+  font-size: 2rem; /* = 20px */
+  margin: 2.4rem 0 1.2rem 0; /* Space above and below */
 }
 
+/* Extra top spacing for the products heading on pages */
 .product-heading {
   padding-top: 4rem;
 }
 
-/* ============================================
-   5. TOAST NOTIFICATION
-============================================ */
+/* ============================================================
+   5. TOAST NOTIFICATIONS
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Small floating messages that appear briefly at
+            the top of the screen (success, error, info).
+
+   HOW IT WORKS:
+   - By default: opacity: 0 (invisible) + pushed up 20px
+   - When JS adds the class "show": opacity: 1 + moves to normal
+   - The CSS "transition" animates the change smoothly
+
+   THREE TYPES:
+   .toast-success → Green (added to cart, login successful)
+   .toast-error   → Red (wrong password, email taken)
+   .toast-info    → Blue (logged out message)
+============================================================ */
 
 .toast {
-  position: fixed;
-  top: 4rem;
-  left: 50%;
+  position: fixed; /* Stays in place even when page scrolls */
+  top: 4rem; /* 40px from the top of the viewport */
+  left: 50%; /* Start at the horizontal center */
+
+  /* translateX(-50%) shifts it LEFT by half its OWN width
+     → This perfectly centers the toast horizontally
+     translateY(-20px) pushes it up slightly (entry animation) */
   transform: translateX(-50%) translateY(-20px);
+
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-size: 1.6rem;
   font-family: "Urbanist", sans-serif;
   font-weight: 500;
   color: #fff;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
+  z-index: 9999; /* Stays on top of EVERYTHING else on the page */
+  opacity: 0; /* Hidden by default — JS will make it visible */
+  pointer-events: none; /* Clicks pass through the toast — won't block interaction */
   letter-spacing: 0.1rem;
+
+  /* Smooth animation when opacity and transform change */
   transition:
     opacity 0.4s ease,
     transform 0.4s ease;
+
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Success toast — Green gradient (add to cart, login, signup) */
 .toast-success {
   background: linear-gradient(135deg, #34d399, #059669);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
+/* Error toast — Red gradient (wrong password, duplicate email) */
 .toast-error {
   background: linear-gradient(135deg, #f87171, #dc2626);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
+/* Info toast — Blue gradient (logout notification) */
 .toast-info {
   background: linear-gradient(135deg, #60a5fa, #2563eb);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
+/* When JS adds class "show", the toast becomes visible
+   and slides down into view (transform resets to 0) */
 .toast.show {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(0); /* Slides into normal position */
 }
 
-/* ============================================
+/* ============================================================
    6. TOP BAR + NAVBAR
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles for the two header sections:
+   1. TOP BAR: Dark strip at the very top showing "Free shipping"
+              text + Sign In / Sign Up / Logout buttons.
+   2. NAVBAR: White sticky bar with the logo and nav links.
+============================================================ */
 
-/* Top bar - free shipping + sign in/up */
+/* ─── TOP BAR ──────────────────────────────────────────────── */
+/* The outer top bar wrapper — dark background strip */
 .top_txt {
-  background-color: var(--buttonColor);
-  color: var(--backgroundColor);
+  background-color: var(--buttonColor); /* Dark background */
+  color: var(--backgroundColor); /* Light text */
 }
 
+/* Inner flex container — evenly spaces text and buttons */
 .top_txt .head {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* Push text left, buttons right */
+  align-items: center; /* Vertically center everything */
   padding: 0.8rem 2.4rem;
-  max-width: 142rem;
-  margin: 0 auto;
+  max-width: 142rem; /* Match main content width */
+  margin: 0 auto; /* Center within the page */
 }
 
+/* "Free shipping, 30-day return..." text on the left */
 .top_txt .head_txt p {
   font-size: 1.4rem;
-  color: #ccc;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 1.6rem;
+  color: #ccc; /* Light grey on dark background */
+  white-space: nowrap; /* Prevents text from wrapping to 2 lines */
+  overflow: hidden; /* Hide any overflow text */
+  text-overflow: ellipsis; /* Show "..." if text is too long */
+  padding-right: 1.6rem; /* Space before the buttons */
 }
 
+/* Sign in/up button group on the right side of the top bar */
 .top_txt .sign_in_up_header {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  flex-shrink: 0;
+  justify-content: flex-end; /* Push buttons to the right */
+  gap: 1.4rem; /* Space between buttons and welcome text */
+  flex-shrink: 0; /* Prevent this group from shrinking */
 }
 
+/* "Welcome, [Name]" text shown when logged in */
 .top_txt .sign_in_up_header .welcomeUser {
   font-weight: 400;
   letter-spacing: 0.1rem;
   font-size: 1.5rem;
   color: #fff;
-  white-space: nowrap;
+  white-space: nowrap; /* Prevent name from wrapping to 2 lines */
 }
 
+/* The SIGN IN and SIGN UP buttons styling */
 .top_txt .sign_in_up_header .btn-sign_in_up_header {
   padding: 0.5rem 1.2rem;
   border: none;
-  background: linear-gradient(135deg, #3d86fa, #0052cc);
+  background: linear-gradient(135deg, #3d86fa, #0052cc); /* Blue gradient */
   color: #fff;
   font-weight: 600;
   letter-spacing: 0.1rem;
   font-size: 1.3rem;
   border-radius: 0.4rem;
   cursor: pointer;
-  white-space: nowrap;
+  white-space: nowrap; /* Keep button text on one line */
   transition:
     transform 0.2s,
     box-shadow 0.2s;
 }
 
+/* Lift effect on hover */
 .top_txt .sign_in_up_header .btn-sign_in_up_header:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Main Navbar */
+/* ─── MAIN NAVBAR ───────────────────────────────────────────── */
+/* The sticky white navbar that stays at the top while scrolling */
 .section-navbar {
   width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: sticky; /* Sticks to top when you scroll past it */
+  top: 0; /* Stick at the very top of the viewport */
+  z-index: 100; /* Stay above all other page content */
   background-color: var(--backgroundSecondary);
+
+  /* Subtle shadow to separate navbar from page content below */
   box-shadow:
     rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+
+  /* These three lines prevent a flickering/blurring bug in
+     some browsers when the navbar is sticky + has shadows */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
+/* Logo wrapper — controls how wide the logo area is */
 .section-navbar .navbar-brand {
-  width: 60%;
+  width: fit-content;
 }
 
+.section-navbar .navbar-brand a {
+  display: block;
+  width: fit-content;
+  line-height: 0;
+}
+
+/* Flex container: logo on left, nav links on right */
 .section-navbar .container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* Logo left, links right */
+  align-items: center; /* Vertically centered */
   padding: 1.8rem 2.4rem;
 }
 
+/* Logo image size */
 .section-navbar img {
-  width: 35%;
+  width: 18rem;
+  height: auto;
+  display: block; /* Removes the small gap that appears under inline images */
 }
 
+/* The navigation link list — displayed horizontally */
 .section-navbar .navbar ul {
   display: flex;
-  gap: 2.4rem;
+  gap: 2.4rem; /* Space between nav items */
   align-items: center;
 }
 
+/* Individual nav link styling */
 .section-navbar .navbar ul li a {
   color: var(--heading-color);
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: uppercase; /* HOME, ABOUT, PRODUCTS etc. */
   font-size: 1.5rem;
-  display: inline-block;
-  position: relative;
-  white-space: nowrap;
-  transition: color 0.3s linear;
+  display: inline-block; /* Needed for the ::after underline to work */
+  position: relative; /* Anchors the ::after pseudo-element */
+  white-space: nowrap; /* Prevent nav items from wrapping */
+  transition: color 0.3s linear; /* Smooth color change on hover */
 }
 
+/* The animated underline effect under nav links on hover.
+   We use ::after (a fake element after each link) with:
+   - width: 0% by default (invisible)
+   - width: 100% on hover (reveals the underline)
+   - CSS transition animates the width change */
 .section-navbar .navbar ul li a::after {
-  content: "";
+  content: ""; /* Required for pseudo-elements to appear */
   position: absolute;
-  bottom: -0.3rem;
+  bottom: -0.3rem; /* Slightly below the link text */
   left: 0;
-  width: 0%;
+  width: 0%; /* Hidden by default */
   border-bottom: 0.1rem solid var(--main-color);
-  transition: all 0.3s linear;
+  transition: width 0.3s linear; /* Animate the width expansion */
 }
 
 .section-navbar .navbar ul li a:hover {
-  color: var(--main-color);
+  color: var(--main-color); /* Link text turns blue-purple on hover */
 }
+
+/* Reveal the full underline on hover */
 .section-navbar .navbar ul li a:hover::after {
-  width: 100%;
+  width: 100%; /* Underline expands from 0% → 100% */
 }
 
-/* ============================================
+/* ============================================================
    7. SIGN IN / SIGN UP PAGES
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles for the full-page auth screens.
+            These pages don't have the standard layout —
+            they are full-height centered forms.
+============================================================ */
 
+/* Full page centered layout for auth pages */
 .sign_in_up {
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(to right, #3d86fa, #b3d2ff);
+  background: linear-gradient(
+    to right,
+    #3d86fa,
+    #b3d2ff
+  ); /* Blue gradient bg */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 90vh;
+  height: 90vh; /* Takes up most of the viewport height */
 }
 
+/* Logo at the top of the auth pages */
 .sign_in_up .navbar-brand {
   width: 25%;
   margin-bottom: 3rem;
@@ -370,17 +554,19 @@ textarea:focus-visible {
   width: 100%;
 }
 
+/* The white card/box containing the form */
 .auth-container {
   background: #fff;
   padding: 3rem 2rem;
-  margin-top: 10rem;
+  margin-top: 10rem; /* Push down from top a bit */
   border-radius: 1.25rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15); /* Floating card look */
   width: 100%;
-  max-width: 420px;
+  max-width: 420px; /* Cap width — it shouldn't be too wide */
   text-align: center;
 }
 
+/* Title inside the auth card (e.g., "Login", "Create Account") */
 .auth-container h2 {
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
@@ -390,6 +576,7 @@ textarea:focus-visible {
   line-height: 1.5;
 }
 
+/* Input fields inside the auth form */
 .auth-container input {
   width: 100%;
   padding: 1rem;
@@ -399,6 +586,7 @@ textarea:focus-visible {
   font-size: 1.5rem;
 }
 
+/* Placeholder text inside inputs */
 .auth-container input::placeholder {
   color: #aaa;
   font-family: "Urbanist", sans-serif;
@@ -408,12 +596,14 @@ textarea:focus-visible {
   font-weight: 700;
 }
 
+/* Blue border glow when input is focused (clicked into) */
 .auth-container input:focus {
   border-color: #3d86fa;
   outline: none;
   box-shadow: 0 0 8px rgba(61, 134, 250, 0.2);
 }
 
+/* The main submit button (Login / Sign Up) */
 .btn-primary {
   width: 100%;
   padding: 1rem;
@@ -435,10 +625,12 @@ textarea:focus-visible {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Extra vertical spacing for the login button specifically */
 .btn-login {
   margin: 1.5rem 0;
 }
 
+/* "Don't have an account? Sign Up" text */
 .auth-container p {
   margin-top: 1.5rem;
   font-size: 1.5rem;
@@ -447,6 +639,7 @@ textarea:focus-visible {
   letter-spacing: 0.1rem;
 }
 
+/* The inline link (e.g., "Sign Up" in the above paragraph) */
 .auth-container a {
   font-weight: 600;
   letter-spacing: 0.1rem;
@@ -459,13 +652,83 @@ textarea:focus-visible {
   text-decoration: underline;
 }
 
-/* ============================================
-   8. HERO SECTION (HOME PAGE)
-============================================ */
+/* ============================================================
+   7a. AUTH BUTTONS — CSS-CONTROLLED SHOW/HIDE
+   ─────────────────────────────────────────────────────────────
+   ✅ THIS IS THE ANTI-FLICKER SYSTEM ✅
 
+   HOW IT WORKS:
+   ─────────────────────────────────────────────────────────────
+   PROBLEM: If JavaScript toggles button visibility AFTER the
+   page renders, you see a brief "flash" of the wrong state.
+
+   SOLUTION — A 2-Part System:
+   ─────────────────────────────────────────────────────────────
+   PART 1 (CSS — this section):
+   - DEFAULT STATE: Sign In + Sign Up are SHOWN.
+                    Welcome text + Logout are HIDDEN.
+   - LOGGED-IN STATE (when <html> has class "logged-in"):
+                    Sign In + Sign Up HIDDEN.
+                    Welcome text + Logout SHOWN.
+
+   PART 2 (Tiny inline script in <head> of every HTML file):
+   - Runs BEFORE the page renders (no delay, no flash!)
+   - Checks localStorage for "currentUser"
+   - If found → adds "logged-in" class to <html> immediately
+   - CSS sees the class → applies the correct state on FIRST paint
+
+   RESULT: The correct login/logout buttons appear instantly —
+   the user NEVER sees the wrong state.
+
+   WHY CSS NOT JS for toggling?
+   CSS applies during rendering. JS applies AFTER rendering.
+   CSS-based toggle = zero frame delay = zero flicker!
+============================================================ */
+
+/* DEFAULT STATE — what the page shows when nobody is logged in */
+.welcomeUser,
+#logoutBtn {
+  display: none; /* Hidden by default — nobody is logged in yet */
+}
+
+/* Sign In and Sign Up buttons are visible by default */
+#signInLink,
+#signUpLink {
+  display: inline;
+}
+
+/* ─── LOGGED-IN STATE ──────────────────────────────────────
+   These rules ONLY apply when <html> has class "logged-in".
+   The inline <head> script adds this class if a user is found.
+   ─────────────────────────────────────────────────────────── */
+
+/* Hide Sign In + Sign Up when logged in */
+html.logged-in #signInLink,
+html.logged-in #signUpLink {
+  display: none;
+}
+
+/* Show the Logout button when logged in */
+html.logged-in #logoutBtn {
+  display: inline-block;
+}
+
+/* Show the "Welcome, [Name]" text when logged in */
+html.logged-in .welcomeUser {
+  display: inline;
+}
+
+/* ============================================================
+   8. HERO SECTION (HOME PAGE)
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: The large first section on index.html with the
+            headline, subheading, description, and hero image.
+============================================================ */
+
+/* The <main> tag wraps the entire hero area on index.html */
 main {
   height: 100%;
-  position: relative;
+  position: relative; /* Needed for the wave shape divider at the bottom */
   background-color: #d9e9ff;
   background-image: linear-gradient(
     to top right,
@@ -474,42 +737,47 @@ main {
     #679eff,
     #b3d2ff,
     #ebf3fe
-  );
+  ); /* Blue-to-white diagonal gradient background */
 }
 
+/* The decorative wave SVG at the bottom of the hero section */
 .custom-shape-divider-bottom-1696038172 {
   position: absolute;
-  bottom: 0;
+  bottom: 0; /* Stick to the very bottom of <main> */
   left: 0;
   width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  transform: rotate(180deg);
+  overflow: hidden; /* Hide any part of the SVG that overflows */
+  line-height: 0; /* Prevent gap below the SVG */
+  transform: rotate(180deg); /* Flip it upside down for the wave effect */
 }
 
 .custom-shape-divider-bottom-1696038172 svg {
   position: relative;
   display: block;
-  width: calc(100% + 1.3px);
+  width: calc(100% + 1.3px); /* Slightly wider than container to avoid gaps */
   height: 12rem;
 }
 
+/* The wave shape color — matches the white section below */
 .custom-shape-divider-bottom-1696038172 .shape-fill {
   fill: #ffffff;
 }
 
+/* The hero section itself — full viewport height, centered content */
 main .section-hero {
-  height: 90vh;
+  height: 90vh; /* Takes up 90% of the screen height */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* Grid layout inside the hero — text left, image right */
 .section-hero .grid {
   align-items: center;
-  gap: 6.4rem;
+  gap: 6.4rem; /* Space between the text column and image column */
 }
 
+/* Small uppercase text above the main heading */
 .section-hero .hero-subheading {
   text-transform: uppercase;
   letter-spacing: 0.2rem;
@@ -519,28 +787,34 @@ main .section-hero {
   font-weight: 700;
 }
 
+/* The large main heading ("Explore the Latest in Tech...") */
 .section-hero .hero-heading {
-  font-size: 5.8rem;
+  font-size: 5.8rem; /* = 58px — large and prominent */
   line-height: 1.5;
   text-transform: capitalize;
   color: #003b99;
-  font-family: "Jost";
+  font-family: "Jost"; /* Different font for impact */
 }
 
+/* Description paragraph text */
 .section-hero .hero-para {
   margin: 2rem 0 4.2rem 0;
   color: white;
 }
 
+/* Hero image — mirrored with scaleX(-1) for visual direction */
 .section-hero img {
   width: 100%;
   height: auto;
-  transform: scaleX(-1);
+  transform: scaleX(-1); /* Flip the image horizontally */
 }
 
-/* ============================================
-   9. PAGE HERO — Shared across all inner pages
-============================================ */
+/* ============================================================
+   9. PAGE HERO — Shared Across Inner Pages
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: The blue banner at the top of About, Products,
+            and Contact pages. Shows page title + subtitle.
+============================================================ */
 
 .page-hero {
   background-image: linear-gradient(
@@ -566,31 +840,37 @@ main .section-hero {
 .page-hero p {
   font-size: 2rem;
   color: #fff;
-  max-width: 60rem;
-  margin: 0 auto;
+  max-width: 60rem; /* Limit width for readability */
+  margin: 0 auto; /* Center it */
 }
 
-/* ============================================
-   10. EXTRA PRODUCT SECTION (HOME)
-============================================ */
+/* ============================================================
+   10. EXTRA PRODUCT SECTION (HOME PAGE)
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: The 3 promotional cards below the hero section
+            on index.html (New Year Sale banners).
+============================================================ */
 
+/* Individual promo card */
 .div-extra {
   padding: 3.2rem 2.4rem;
   background-color: var(--backgroundSecondary);
-  position: relative;
+  position: relative; /* Needed for the decorative ::after circle */
   border-radius: 0.5rem;
 }
 
+/* Decorative curved shape in the bottom-right corner of promo cards
+   This is a pure CSS shape created with border-radius */
 .div-extra::after {
-  content: "";
+  content: ""; /* Required — pseudo-elements need content to render */
   position: absolute;
   right: 0;
   bottom: 0;
   width: 15rem;
   height: 15rem;
-  border-radius: 100% 0% 0% 100% / 100% 0% 100% 0%;
+  border-radius: 100% 0% 0% 100% / 100% 0% 100% 0%; /* Creates a curved corner shape */
   background-color: var(--borderColor);
-  z-index: 1;
+  z-index: 1; /* Above the card background but below the content */
 }
 
 .div-extra p {
@@ -608,19 +888,21 @@ main .section-hero {
 .div-extra a {
   text-transform: uppercase;
   color: var(--buttonColor);
-  border-bottom: 0.1rem solid var(--secondaryColor);
+  border-bottom: 0.1rem solid var(--secondaryColor); /* Underline link style */
 }
 
+/* Image container for promo card images */
 .div-extra .extra-img {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 2; /* Above the decorative shape */
 }
 
 .div-extra .extra-img img {
   width: 18rem;
   filter: drop-shadow(5px 8px 24px rgba(25, 76, 127, 0.2));
+  /* drop-shadow adds a shadow that follows the image shape */
 }
 
 .div-extra img {
@@ -629,22 +911,28 @@ main .section-hero {
   height: auto;
 }
 
+/* Slight rotation on the last promo card for visual variety */
 .div-extra:last-child img {
   transform: rotate(5deg);
 }
 
+/* Laptop image in the promo section — slightly wider */
 .div-extra .extra-laptop img {
   width: 28rem;
   height: auto;
 }
 
+/* Extra spacing for the 3-column promo grid */
 .grid-three-cols {
   gap: 6.4rem;
 }
 
-/* ============================================
+/* ============================================================
    11. POLICY SECTION
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: The row of policy icons on the home page
+            (Free Shipping, Easy Returns, 24/7 Support, etc.)
+============================================================ */
 
 .section-policy .container {
   padding: 3.2rem 0;
@@ -652,60 +940,70 @@ main .section-hero {
   border-radius: 0.5rem;
 }
 
+/* Each individual policy item */
 .div-policy {
   padding: 3.2rem;
   display: flex;
   align-items: center;
-  gap: 3.2rem;
-  border-right: 0.1rem solid var(--backgroundColor);
+  gap: 3.2rem; /* Space between icon and text */
+  border-right: 0.1rem solid var(--backgroundColor); /* Divider between items */
 }
 
+/* Remove the divider from the LAST policy item */
 .div-policy:last-child {
   border-right: none;
 }
 
+/* The icon (Font Awesome) in each policy item */
 .div-policy .icons {
   font-size: 3.2rem;
-  color: #576ef0;
+  color: #576ef0; /* Blue-purple icon color */
 }
 
 .div-policy p {
   text-transform: capitalize;
 }
 .div-policy p:last-child {
-  font-size: 1.4rem;
+  font-size: 1.4rem; /* Smaller font for the sub-text */
 }
 
-/* ============================================
-   12. WHY CHOOSE US
-============================================ */
+/* ============================================================
+   12. WHY CHOOSE US SECTION
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: The 3-column section with the animated circle
+            image in the center and feature points on sides.
+============================================================ */
 
 .section-why--choose .grid {
-  gap: 9.6rem;
+  gap: 9.6rem; /* Wide gap between the 3 columns */
   align-items: center;
 }
 
+/* Each feature point block */
 .why-choose--div {
   margin-bottom: 3.2rem;
 }
 
+/* Right column items aligned to the right */
 .section-why--choose .text-align--right .why-choose--div {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-end; /* Align content to the right */
   text-align: end;
 }
 
+/* Left column items aligned to the left */
 .section-why--choose .text-align--left .why-choose--div {
   align-items: flex-start;
 }
 
+/* The round icon badge next to each feature point */
 .common-text--highlight {
   color: var(--main-color);
   width: 6rem;
   height: 6rem;
-  background-color: var(--supporting-color);
-  border-radius: 50%;
+  background-color: var(--supporting-color); /* Light blue background */
+  border-radius: 50%; /* Perfect circle */
   font-size: 2.4rem;
   margin: 0;
   display: flex;
@@ -718,6 +1016,7 @@ main .section-hero {
   margin-top: 1.2rem;
 }
 
+/* ─── Center column — the animated image ─────────────────── */
 .choose-center-div,
 .choose-center-div figure {
   display: flex;
@@ -727,20 +1026,24 @@ main .section-hero {
   transform-origin: center;
 }
 
+/* The large animated circle behind the center image (::before)
+   Uses @keyframes animation to slowly change color */
 .choose-center-div figure::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); /* Center the circle on the image */
   width: 45rem;
   height: 45rem;
-  border-radius: 50%;
+  border-radius: 50%; /* Perfect circle */
   background-color: var(--main-color);
-  z-index: -1;
+  z-index: -1; /* Behind the image */
   animation: circle 5s linear infinite alternate;
+  /* Runs the @keyframes "circle" animation: 5 second loop, alternates direction */
 }
 
+/* Animation that cycles through blue shades */
 @keyframes circle {
   0% {
     background-color: #b3d0ff;
@@ -759,6 +1062,7 @@ main .section-hero {
   }
 }
 
+/* A second (slightly larger) decorative ring around the image (::after) */
 .choose-center-div figure::after {
   content: "";
   position: absolute;
@@ -769,39 +1073,46 @@ main .section-hero {
   height: 50rem;
   border-radius: 50%;
   background-color: transparent;
-  border: 0.5rem solid var(--supporting-color);
+  border: 0.5rem solid var(--supporting-color); /* Ring outline only */
   z-index: -1;
 }
 
+/* The center image itself */
 .choose-center-div img {
   width: 90%;
   height: auto;
 }
 
-/* ============================================
+/* ============================================================
    13. FOOTER
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: The site-wide footer at the bottom of all pages.
+            Contains logo, navigation links, and newsletter.
+============================================================ */
 
 footer {
   width: 100%;
-  background: #8a8a8a;
+  background: #8a8a8a; /* Medium grey */
   color: var(--backgroundColor);
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
-  margin-top: 6.4rem;
+  margin-top: 6.4rem; /* Space above the footer */
 }
 
+/* Logo in the footer */
 .footer-container .content_1 img {
   height: auto;
   width: 15rem;
 }
 
+/* Main footer grid — 4 columns spaced evenly */
 .footer-container {
   display: flex;
   justify-content: space-between;
   padding: 6rem 0;
 }
 
+/* Section headings inside footer columns (SHOPPING, EXPERIENCE etc.) */
 .footer-container h4 {
   font-weight: 500;
   letter-spacing: 0.1rem;
@@ -810,14 +1121,16 @@ footer {
   color: #fff;
 }
 
+/* Links inside footer columns */
 .footer-container a {
-  display: block;
+  display: block; /* Each link on its own line */
   text-decoration: none;
-  color: #cccccc;
-  margin-bottom: 1.5rem;
+  color: #cccccc; /* Light grey on grey background */
+  margin-bottom: 1.5rem; /* Space between links */
   font-size: 1.4rem;
 }
 
+/* Description text in footer columns 1 and 4 */
 .footer-container .content_1 p,
 .footer-container .content_4 p {
   color: #cccccc;
@@ -825,42 +1138,50 @@ footer {
   font-size: 1.4rem;
 }
 
+/* Newsletter email input field */
 .footer-container .content_4 input[type="email"] {
-  background-color: var(--textColor);
+  background-color: var(--textColor); /* Dark background */
   border: none;
-  color: var(--backgroundColor);
+  color: var(--backgroundColor); /* Light text on dark background */
   outline: none;
   padding: 1.4rem 0.8rem;
   width: 100%;
 }
 
+/* Flex layout: email input + submit button side by side */
 .footer-container .content_4 .f-mail {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* Bottom "Design and Code by..." strip */
 .f-design {
   width: 100%;
   text-align: center;
 }
 
 .f-design .f-design-txt {
-  border-top: 1px solid var(--secondaryColor);
+  border-top: 1px solid var(--secondaryColor); /* Separator line */
   padding: 1.6rem 0;
   color: var(--secondaryColor);
 }
 
-/* ============================================
+/* ============================================================
    14. PRODUCT CARDS
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles for the product card grid on the Products
+            page, and the individual card layout.
+============================================================ */
 
+/* Outer grid container — holds all product cards */
 #productContainer {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4.8rem;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 4.8rem; /* Space between cards */
 }
 
+/* Info section inside each card (name, price, etc.) */
 #productContainer .information {
   display: flex;
   flex-direction: column;
@@ -868,32 +1189,36 @@ footer {
   gap: 1rem;
 }
 
+/* Individual product card wrapper */
 .cards {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Items wrap to next line if needed */
   align-items: flex-start;
   gap: 2.5rem;
-  width: 36rem;
+  width: 36rem; /* Fixed card width */
   padding: 1.6rem;
   margin: 1.8vh auto;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; /* Soft card shadow */
   border-radius: 0.3rem;
 }
 
+/* The small category tag badge (e.g., "Laptop", "Phone") */
 .category {
-  background-color: #e7d6d6;
+  background-color: #e7d6d6; /* Pinkish background */
   padding: 0.3rem 1.2rem;
   font-size: 1.2rem;
   letter-spacing: 0.1rem;
-  border-radius: 10rem;
+  border-radius: 10rem; /* Pill shape */
 }
 
+/* Product image */
 .productImage {
   max-width: 100%;
   width: 32rem;
-  height: auto;
+  height: auto; /* Maintain aspect ratio */
 }
 
+/* Row layouts for price, quantity, and stock elements */
 .productPriceElement,
 .productQuantityElement,
 .productStockElement {
@@ -906,14 +1231,17 @@ footer {
 .productPriceElement {
   margin: 0.8rem 0;
 }
+
+/* Text size for product details */
 .productProperty,
 .productDescription {
   font-size: 1.6rem;
 }
 
+/* The +/- quantity selector (3 cells: button, number, button) */
 .stockElement {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
   align-items: center;
   border: 0.2rem solid var(--borderColor);
   border-radius: 0.8rem;
@@ -930,11 +1258,13 @@ footer {
   cursor: pointer;
 }
 
+/* Add right border ONLY on the + button (divides + from count) */
 .stockElement button:first-child {
   border-right: 0.1rem solid var(--borderColor);
   border-radius: 0;
 }
 
+/* Add left border ONLY on the - button (divides count from -) */
 .stockElement button:last-child {
   border-left: 0.1rem solid var(--borderColor);
   border-radius: 0;
@@ -946,17 +1276,41 @@ footer {
   font-weight: bold;
 }
 
+/* ─── CART ICON IN NAVBAR ────────────────────────────────────
+   PURPOSE: The cart button in the navbar that shows item count.
+
+   WHY visibility: hidden (not display: none)?
+   "display: none" removes the element from layout entirely —
+   the navbar layout would shift when it appears.
+   "visibility: hidden" keeps the space reserved but makes
+   it invisible — no layout shift = no visual "jump"!
+
+   JS controls when to make it visible (only when cart has items).
+   ─────────────────────────────────────────────────────────── */
 #cartValue {
   background-color: var(--buttonColor);
   color: #fff;
   padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  visibility: hidden; /* Hidden by default — JS shows it when cart has items */
 }
 
+/* The number inside the cart icon badge */
+.cart-count {
+  font-size: 1.4rem;
+  font-weight: 700;
+  min-width: 1rem; /* Minimum width so "1" doesn't look too narrow */
+  text-align: center;
+}
+
+/* "Add to Cart" button + Contact button + Hero button */
 .add-to-cart-button,
 .contact-btn,
 .hero-btn a {
   font-weight: 500;
-  font: inherit;
+  font: inherit; /* Inherit font from parent (Urbanist) */
   border-radius: 6px;
   border: 0;
   padding: 1rem 2.8rem;
@@ -966,6 +1320,7 @@ footer {
   cursor: pointer;
 }
 
+/* Hover state: inset shadow + color inversion */
 .add-to-cart-button:hover,
 .contact-btn:hover,
 .hero-btn a:hover {
@@ -976,51 +1331,68 @@ footer {
   color: var(--buttonColor);
 }
 
-/* ============================================
-   15. ADD TO CART PAGE
-============================================ */
+/* ============================================================
+   15. CART PAGE (addToCart.html)
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles specific to the shopping cart page.
+            Includes the empty cart message, cart items list,
+            and order summary panel.
+============================================================ */
 
+/* Utility class to hide elements — used by toggleCartView.js
+   !important ensures this overrides any other display values */
 .hidden {
   display: none !important;
 }
 
+/* Outer container for all cart items */
 #productCartContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack items vertically */
 }
 
+/* Cart items use full width, no card width limit */
 #productCartContainer .cards {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  box-shadow: none;
+  box-shadow: none; /* Remove shadow — items are not floating cards here */
   border-radius: 0;
 }
 
+/* Each cart item row — a 6-column grid layout */
 #productCartContainer .card {
   width: 100%;
   display: grid;
   grid-template-columns: 0.5fr 0.5fr 1fr 0.5fr 1fr 1fr;
+  /* Columns: image | name | price | qty toggle | total | remove button */
   align-items: center;
   gap: 3.2rem;
   padding: 1.6rem 2rem;
 }
 
+/* Cart item image — smaller than product page */
 #productCartContainer .productImage {
   width: 16rem;
 }
+
+/* Cart item name font size */
 #productCartContainer .productName {
   font-size: 2rem;
 }
 
+/* Cart item price and original price */
 #productCartContainer .productPrice,
 #productCartContainer .productActualPrice {
   font-size: 2.2rem;
 }
+
+/* Strike-through on original price */
 #productCartContainer .productActualPrice {
   text-decoration: line-through;
 }
 
+/* +/- buttons in cart */
 #productCartContainer .stockElement {
   border-color: #e5e7eb;
   border-radius: 0.6rem;
@@ -1029,12 +1401,14 @@ footer {
 #productCartContainer .stockElement button {
   font-size: 1.8rem;
 }
+
 #productCartContainer .stockElement .productQuantity {
-  min-width: 3.6rem;
+  min-width: 3.6rem; /* Enough width for 2-digit numbers */
 }
 
+/* Remove button for each cart item */
 #productCartContainer .remove-to-cart-button {
-  justify-self: end;
+  justify-self: end; /* Push to the right side of its grid cell */
   padding: 0.9rem 1.6rem;
   background: #111317;
   color: #fff;
@@ -1048,24 +1422,27 @@ footer {
     box-shadow 0.18s ease;
 }
 
-#productCartContainer .remove-to-cart-button:hover {
+.#productCartContainer .remove-to-cart-button:hover {
   box-shadow:
     inset 0px 1px 4px rgba(0, 0, 0, 0.16),
     inset 0px 0px 0px 3px rgb(51, 51, 51);
   background-color: var(--backgroundColor);
   color: var(--buttonColor);
-  transform: translateY(-1px);
+  transform: translateY(-1px); /* Subtle lift on hover */
 }
 
+/* Horizontal rule (divider) between cart items */
 #productCartContainer .cards hr {
   border: 1px solid #ccc;
   margin: 1rem 0;
 }
 
+/* Hide the divider after the LAST cart item (no trailing line) */
 #productCartContainer .cards:last-child hr {
   display: none;
 }
 
+/* The cart page background — matching the site's blue gradient */
 .cart-main {
   height: auto;
   position: relative;
@@ -1079,6 +1456,7 @@ footer {
   );
 }
 
+/* "Your Shopping Cart" title */
 main .cart-title {
   font-size: 2.4rem;
   font-weight: 700;
@@ -1086,14 +1464,17 @@ main .cart-title {
   margin: 0 0 1.6rem 0;
 }
 
+/* The container wrapping both cart columns */
 main > .container {
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
 
+/* ─── EMPTY CART STATE ────────────────────────────────────── */
+/* Shown when cart has no items */
 .empty-cart {
   display: grid;
-  place-items: center;
+  place-items: center; /* Center everything (image, text, button) */
   gap: 1.2rem;
   padding: 4rem 2rem;
   background: var(--backgroundSecondary);
@@ -1108,17 +1489,20 @@ main > .container {
   height: auto;
   opacity: 0.95;
 }
+
 .empty-cart h2 {
   font-size: 2rem;
   font-weight: 700;
   color: var(--textColor);
 }
+
 .empty-cart p {
   font-size: 1.6rem;
   color: #6b7280;
   margin-top: 0.4rem;
 }
 
+/* "Shop Now" button inside empty cart */
 .empty-cart .shop-now-btn {
   display: inline-block;
   margin-top: 0.8rem;
@@ -1140,28 +1524,34 @@ main > .container {
   transform: translateY(-1px);
 }
 
+/* ─── CART PAGE LAYOUT (when cart HAS items) ─────────────── */
+/* Two-column layout: cart items left, order summary right */
 .cart-page {
   display: grid;
   grid-template-columns: 1fr 32rem;
+  /* 1fr = takes remaining space, 32rem = fixed summary panel width */
   gap: 2.6rem;
-  align-items: start;
+  align-items: start; /* Align to top, not stretch */
 }
 
+/* Left column — the list of cart items */
 .cart-page .cart-items {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1.6rem; /* Space between each cart item card */
   width: 100%;
   border-radius: 0.8rem;
   background: #fff;
 }
 
+/* Right column — Order Summary panel */
 .cart-summary {
-  position: sticky;
-  top: 2rem;
-  height: fit-content;
+  position: sticky; /* Sticks in view when scrolling through long cart */
+  top: 2rem; /* 20px from the top of the viewport */
+  height: fit-content; /* Don't stretch to fill the column */
 }
 
+/* The white card containing the order summary */
 .cart-summary .cart-summary-box {
   width: 100%;
   border-radius: 0.8rem;
@@ -1171,6 +1561,7 @@ main > .container {
   padding: 2rem;
 }
 
+/* "Order Summary" heading */
 .cart-summary .summary-title {
   font-size: 1.7rem;
   font-weight: 700;
@@ -1178,31 +1569,35 @@ main > .container {
   margin-bottom: 1.2rem;
 }
 
+/* Each row in the summary (Sub Total, Tax, Total) */
 .cart-summary .summary-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* Label left, value right */
   gap: 1.2rem;
   padding: 0.8rem 0;
   font-size: 1.5rem;
   color: #6b7280;
 }
 
+/* The Final Total row — slightly larger and darker */
 .cart-summary .summary-row.total {
   font-size: 1.7rem;
   color: #0f1a2c;
 }
 
 .cart-summary .summary-row.total strong {
-  font-weight: 800;
+  font-weight: 800; /* Extra bold for the total amount */
 }
 
+/* Thin divider line inside the summary box */
 .cart-summary .cart-summary-box hr {
   border: 0;
   border-top: 1px solid #eef2f7;
   margin: 0.6rem 0 1.2rem 0;
 }
 
+/* "Proceed to Checkout" button */
 .cart-summary .checkout-btn {
   width: 100%;
   margin-top: 1.2rem;
@@ -1229,10 +1624,14 @@ main > .container {
   transform: translateY(-1px);
 }
 
-/* ============================================
+/* ============================================================
    16. ABOUT PAGE
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles for the project info cards, tech stack
+            tags, and developer profile card on about.html.
+============================================================ */
 
+/* Background section for "What is Express Bazaar?" */
 .section-project-info {
   background-color: var(--backgroundSecondary);
   padding: 6.4rem 2.4rem;
@@ -1245,6 +1644,7 @@ main > .container {
   color: var(--textColor);
 }
 
+/* Grid of project feature cards (3 columns) */
 .project-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1253,19 +1653,22 @@ main > .container {
   margin: 0 auto;
 }
 
+/* Individual feature card (E-Commerce, localStorage, Auth Flow) */
 .project-card {
   background: #fff;
   border-radius: 1rem;
   padding: 3.2rem 2.4rem;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 16px;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease; /* Smooth lift on hover */
 }
 
+/* Lift card up slightly on hover */
 .project-card:hover {
   transform: translateY(-4px);
 }
 
+/* Icon inside each card */
 .project-card .card-icon {
   font-size: 3.6rem;
   color: var(--main-color);
@@ -1284,6 +1687,7 @@ main > .container {
   line-height: 1.7;
 }
 
+/* Tech Stack section background */
 .section-tech-stack {
   padding: 6.4rem 2.4rem;
   background-color: var(--backgroundColor);
@@ -1296,25 +1700,28 @@ main > .container {
   color: var(--textColor);
 }
 
+/* Flex container for the tech tags */
 .tech-tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Tags wrap to the next line if needed */
   justify-content: center;
   gap: 1.6rem;
   max-width: 80rem;
   margin: 0 auto;
 }
 
+/* Individual tech tag pill (HTML5, CSS3, Vite, etc.) */
 .tech-tag {
-  background-color: var(--supporting-color);
-  color: var(--main-color);
+  background-color: var(--supporting-color); /* Light blue background */
+  color: var(--main-color); /* Blue-purple text */
   font-weight: 700;
   font-size: 1.6rem;
   padding: 0.8rem 2rem;
-  border-radius: 10rem;
+  border-radius: 10rem; /* Pill/capsule shape */
   letter-spacing: 0.1rem;
 }
 
+/* Developer profile section background */
 .section-developer {
   background-image: linear-gradient(
     to top right,
@@ -1327,19 +1734,21 @@ main > .container {
   padding: 6.4rem 2.4rem;
 }
 
+/* The white developer profile card */
 .developer-card {
   max-width: 70rem;
-  margin: 0 auto;
+  margin: 0 auto; /* Center the card */
   background: #fff;
   border-radius: 1.2rem;
   padding: 4rem 3.2rem;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr; /* Avatar + Info side by side */
   gap: 3.2rem;
   align-items: center;
 }
 
+/* Circular avatar placeholder */
 .developer-avatar {
   width: 10rem;
   height: 10rem;
@@ -1358,13 +1767,14 @@ main > .container {
   color: var(--textColor);
 }
 
+/* Role/title text (React Developer | Open to Work) */
 .developer-info .role {
   font-size: 1.6rem;
   color: var(--main-color);
   font-weight: 700;
   margin-bottom: 1.2rem;
   letter-spacing: 0.1rem;
-  display: block;
+  display: block; /* Ensures it's on its own line */
 }
 
 .developer-info p {
@@ -1373,6 +1783,7 @@ main > .container {
   line-height: 1.7;
 }
 
+/* GitHub / LinkedIn link row */
 .developer-links {
   display: flex;
   gap: 1.6rem;
@@ -1391,12 +1802,14 @@ main > .container {
 }
 
 .developer-links a:hover {
-  color: #003b99;
+  color: #003b99; /* Darker blue on hover */
 }
 
-/* ============================================
+/* ============================================================
    17. PRODUCTS PAGE
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Wrapper and heading styles for products.html.
+============================================================ */
 
 .section-products-page {
   padding: 4.8rem 2.4rem;
@@ -1409,15 +1822,20 @@ main > .container {
   color: var(--textColor);
 }
 
-/* ============================================
+/* ============================================================
    18. CONTACT PAGE
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Styles for the contact information cards and
+            the contact form on contact.html.
+============================================================ */
 
+/* Top section with email/GitHub/LinkedIn cards */
 .section-contact-info {
   background-color: var(--backgroundColor);
-  padding: 6.4rem 2.4rem 0 2.4rem;
+  padding: 6.4rem 2.4rem 0 2.4rem; /* No bottom padding — form is below */
 }
 
+/* Grid of 3 contact info cards */
 .contact-info-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1426,6 +1844,7 @@ main > .container {
   margin: 0 auto;
 }
 
+/* Individual contact info card */
 .contact-info-card {
   background: #fff;
   border-radius: 1rem;
@@ -1436,7 +1855,7 @@ main > .container {
 }
 
 .contact-info-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px); /* Slight lift on hover */
 }
 
 .contact-info-card .card-icon {
@@ -1456,11 +1875,13 @@ main > .container {
   color: #6b7280;
 }
 
+/* Section wrapping the form */
 .section-contact-form {
   background-color: var(--backgroundColor);
   padding: 6.4rem 2.4rem;
 }
 
+/* White form card container */
 .contact-form-wrapper {
   max-width: 70rem;
   margin: 0 auto;
@@ -1477,12 +1898,13 @@ main > .container {
   text-align: center;
 }
 
+/* Each form field group (label + input) */
 .form-group {
   margin-bottom: 2.4rem;
 }
 
 .form-group label {
-  display: block;
+  display: block; /* Label on its own line above the input */
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--textColor);
@@ -1490,6 +1912,7 @@ main > .container {
   text-transform: capitalize;
 }
 
+/* Text inputs and textarea in the contact form */
 .form-group input,
 .form-group textarea {
   width: 100%;
@@ -1504,24 +1927,28 @@ main > .container {
   letter-spacing: 0.05rem;
 }
 
+/* Blue highlight when input is focused */
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: var(--main-color);
-  box-shadow: 0 0 0 3px rgba(83, 91, 242, 0.1);
+  box-shadow: 0 0 0 3px rgba(83, 91, 242, 0.1); /* Soft blue glow */
 }
 
+/* Allow vertical resize of textarea (but not horizontal) */
 .form-group textarea {
   resize: vertical;
   min-height: 14rem;
 }
 
+/* First Name + Last Name displayed side by side */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2.4rem;
 }
 
+/* "Send Message" submit button */
 .btn-contact-submit {
   width: 100%;
   padding: 1.4rem;
@@ -1545,79 +1972,119 @@ main > .container {
   transform: translateY(-2px);
 }
 
+/* Success message shown after form submission */
 .form-success {
-  display: none;
+  display: none; /* Hidden until JS shows it */
   text-align: center;
   padding: 2.4rem;
-  background: #f0fdf4;
+  background: #f0fdf4; /* Light green background */
   border-radius: 0.8rem;
   margin-top: 2.4rem;
 }
 
+/* Checkmark icon */
 .form-success .success-icon {
   font-size: 4rem;
-  color: #22c55e;
+  color: #22c55e; /* Green */
   margin-bottom: 1.2rem;
   display: block;
 }
 
 .form-success p {
   font-size: 1.8rem;
-  color: #166534;
+  color: #166534; /* Dark green text */
   font-weight: 600;
 }
 
-/* ============================================
+/* ============================================================
    19. LOADER
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: A spinning loading indicator shown while product
+            data is being fetched/rendered.
+
+   HOW IT WORKS:
+   The element uses a CSS mask to create a "donut" spinner.
+   The @keyframes rotates it 360 degrees continuously.
+============================================================ */
 
 .loader {
   width: 50px;
   padding: 8px;
-  aspect-ratio: 1;
+  aspect-ratio: 1; /* Forces element to be a perfect square */
   border-radius: 50%;
-  background: #25b09b;
+  background: #25b09b; /* Teal color */
+
+  /* The --_m custom property holds the mask shape.
+     conic-gradient creates the donut cutout effect. */
   --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
   -webkit-mask: var(--_m);
   mask: var(--_m);
-  -webkit-mask-composite: source-out;
-  mask-composite: subtract;
+  -webkit-mask-composite: source-out; /* Safari: cutout technique */
+  mask-composite: subtract; /* Standard: cutout technique */
+
+  /* Rotation animation — one full spin per second, repeating */
   animation: l3 1s infinite linear;
 }
 
+/* The keyframe that does the spinning */
 @keyframes l3 {
   to {
-    transform: rotate(1turn);
+    transform: rotate(1turn); /* 1turn = 360 degrees */
   }
 }
 
+/* Wrapper that centers the loader on the page */
 .loader-section {
-  height: 50vh;
+  height: 50vh; /* Half the viewport height */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* ============================================
+/* ============================================================
    20. MEDIA QUERIES — ALL BREAKPOINTS
-============================================ */
+   ─────────────────────────────────────────────────────────────
+   PURPOSE: Make the website responsive — meaning it looks
+            good on all screen sizes (desktop, tablet, mobile).
 
-/* 1380px — Large desktops */
+   HOW MEDIA QUERIES WORK:
+   @media screen and (max-width: 768px) { ... }
+   → The rules INSIDE only apply when screen is ≤ 768px wide.
+   → This lets us override desktop styles for smaller screens.
+
+   MOBILE-FIRST vs DESKTOP-FIRST:
+   This project uses DESKTOP-FIRST approach:
+   — Write styles for desktop by default.
+   — Use max-width media queries to override for smaller screens.
+
+   BREAKPOINTS USED:
+   1380px → Large desktops (reduce font scale)
+   1220px → Medium desktops
+   1100px → Tablet landscape
+    980px → Tablet portrait
+    768px → Large phones / mobile landscape
+    600px → Medium phones
+    480px → Small phones
+============================================================ */
+
+/* ─── 1380px — Large desktops ──────────────────────────────── */
 @media screen and (max-width: 1380px) {
+  /* Reduce the base font size slightly for large screens */
   html {
-    font-size: 56.25%;
+    font-size: 56.25%; /* 1rem = ~9px instead of 10px */
   }
   .section-hero img {
-    width: 90%;
+    width: 90%; /* Slightly smaller hero image */
   }
 }
 
-/* 1220px */
+/* ─── 1220px — Medium desktops ─────────────────────────────── */
 @media screen and (max-width: 1220px) {
   html {
     font-size: 54%;
   }
 
+  /* Reduce gaps in grid sections */
   .section-about .grid,
   .section-blog .grid,
   .section-course .grid,
@@ -1626,28 +2093,35 @@ main > .container {
     gap: 6.4rem;
   }
 
+  /* Make the decorative ring slightly smaller */
   .choose-center-div figure::after {
     width: 46rem;
     height: 46rem;
   }
 }
 
-/* 1100px — Tablet landscape */
+/* ─── 1100px — Tablet landscape ────────────────────────────── */
 @media screen and (max-width: 1100px) {
+  /* Policy cards wrap to a 2-column auto-fill grid */
   .grid-four--cols {
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    /* auto-fill + minmax: creates as many 250px columns as will fit */
   }
 
+  /* Smaller wave divider */
   .custom-shape-divider-bottom-1696038172 svg {
     height: 8rem;
   }
 
+  /* Reorder the "Why Choose" columns for tablet:
+     1 → Center (image), 2 → Left, 3 → Right */
   .section-why--choose .choose-left-div {
     order: 2;
   }
   .section-why--choose .choose-center-div {
     order: 1;
   }
+  /* Hide decorative circles on tablet — too large for smaller screens */
   .section-why--choose .choose-center-div figure::before,
   .section-why--choose .choose-center-div figure::after {
     display: none;
@@ -1656,15 +2130,18 @@ main > .container {
     order: 3;
   }
 
+  /* Slightly smaller contact title */
   .contact-title {
     font-size: 2.4rem;
   }
 
+  /* Contact form: 2 columns with different widths */
   .section-contact .grid-two--cols {
     grid-template-columns: 2fr 1.5fr;
     gap: 3.2rem;
   }
 
+  /* Project cards and contact info cards switch to 2 columns */
   .project-cards {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1673,16 +2150,19 @@ main > .container {
   }
 }
 
-/* 980px — Tablet portrait */
+/* ─── 980px — Tablet portrait ──────────────────────────────── */
 @media screen and (max-width: 980px) {
+  /* Reduce horizontal body padding */
   body {
     padding: 0 0.6rem;
   }
 
+  /* Products grid: 2 columns */
   #productContainer {
     grid-template-columns: repeat(2, minmax(33%, 1fr));
   }
 
+  /* Slightly smaller hero heading */
   .section-hero .hero-heading {
     font-size: 4.4rem;
   }
@@ -1691,14 +2171,16 @@ main > .container {
     padding: 0 1.6rem;
   }
 
+  /* Footer switches from flex to 2-column grid */
   .footer-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 3.2rem;
   }
 
+  /* First footer column spans full width */
   .footer-container .content_1 {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; /* Span from column 1 to the last column */
     margin-bottom: 0;
   }
 
@@ -1706,17 +2188,21 @@ main > .container {
     margin-top: 0;
   }
 
+  /* Hero section: stack image and text vertically */
   main .section-hero {
-    height: auto;
+    height: auto; /* No fixed height — content determines height */
   }
   main .section-hero .grid-two--cols {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column */
   }
 
+  /* Text content appears below the image on mobile
+     (order: 2 pushes it down, image keeps default order: 0) */
   .section-hero .section-hero--content {
     order: 2;
   }
 
+  /* Center the hero image */
   .section-hero .section-hero-image {
     display: grid;
     place-items: center;
@@ -1725,18 +2211,23 @@ main > .container {
   .section-hero img {
     width: 100%;
   }
+
+  footer {
+    padding: 0 1.6rem;
+  }
 }
 
-/* 768px — Mobile landscape / large phones */
+/* ─── 768px — Large phones / Mobile landscape ──────────────── */
 @media screen and (max-width: 768px) {
-  /* Top bar — stack on very small screens */
+  /* Top bar stacks text on top, buttons below */
   .top_txt .head {
-    flex-direction: column;
+    flex-direction: column; /* Vertical stacking */
     gap: 0.8rem;
     text-align: center;
     padding: 1rem 1.6rem;
   }
 
+  /* Allow text to wrap on small screens */
   .top_txt .head_txt p {
     white-space: normal;
     overflow: visible;
@@ -1744,7 +2235,7 @@ main > .container {
     padding-right: 0;
   }
 
-  /* Navbar — stack logo + links */
+  /* Navbar: stack logo above nav links */
   .section-navbar .container {
     flex-direction: column;
     align-items: center;
@@ -1753,9 +2244,10 @@ main > .container {
   }
 
   .section-navbar .navbar-brand {
-    width: 45%;
+    width: fit-content;
   }
 
+  /* Nav links wrap to multiple rows if needed */
   .section-navbar .navbar ul {
     gap: 1.2rem;
     flex-wrap: wrap;
@@ -1766,7 +2258,7 @@ main > .container {
     font-size: 1.3rem;
   }
 
-  /* Grid resets */
+  /* All 2-col and 3-col grids become single column */
   .grid-two--cols,
   .grid-three--cols {
     grid-template-columns: 1fr;
@@ -1776,15 +2268,18 @@ main > .container {
     grid-template-columns: 1fr;
   }
 
+  /* Smaller hero heading */
   .section-hero .hero-heading {
     font-size: 4.2rem;
   }
 
+  /* Products grid: single column */
   #productContainer {
     grid-template-columns: 1fr;
   }
 
-  /* Cart page */
+  /* ─── Cart Page Responsive Layout ──────────────────────── */
+  /* Cart items: compress to 4 columns instead of 6 */
   #productCartContainer .card {
     grid-template-columns: 0.5fr 0.1fr repeat(2, 1fr);
     gap: 1.6rem;
@@ -1793,21 +2288,28 @@ main > .container {
   .productQuantity {
     text-align: center;
   }
+
+  /* Quantity control spans 3 columns */
   .stockElement {
     grid-column: 1 / 4;
   }
+
+  /* Remove button spans the last column */
   .remove-to-cart-button {
     grid-column: 4 / -1;
   }
 
+  /* Cart summary moves below the cart items (single column) */
   .cart-page {
     grid-template-columns: 1fr;
   }
+
+  /* Summary panel no longer sticky — just flows normally */
   .cart-summary {
     position: static;
   }
 
-  /* Why choose */
+  /* Why Choose Us: images shrink */
   .section-why--choose img {
     width: 30%;
   }
@@ -1815,39 +2317,44 @@ main > .container {
     gap: 1.4rem;
   }
 
+  /* Right-aligned items go back to left-aligned on mobile */
   .section-why--choose .text-align--right .why-choose--div {
     align-items: flex-start;
     text-align: start;
   }
-
   .section-why--choose .choose-left-div {
     text-align: left;
   }
 
+  /* Contact home section button becomes full width */
   .section-contact--homepage .btn {
     display: block;
     text-align: center;
   }
 
-  /* About page */
+  /* About page: single column cards */
   .project-cards {
     grid-template-columns: 1fr;
   }
 
+  /* Developer card: stacks avatar and info vertically */
   .developer-card {
     grid-template-columns: 1fr;
     text-align: center;
     padding: 2.4rem 1.6rem;
   }
 
+  /* Center the avatar */
   .developer-avatar {
     margin: 0 auto;
   }
+
+  /* Center the social links */
   .developer-links {
     justify-content: center;
   }
 
-  /* Page hero */
+  /* Page hero adjustments */
   .page-hero {
     padding: 4rem 1.6rem;
   }
@@ -1858,90 +2365,109 @@ main > .container {
     font-size: 1.7rem;
   }
 
-  /* Contact page */
+  /* Contact page: single column cards and form rows */
   .contact-info-cards {
     grid-template-columns: 1fr;
   }
   .form-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* First/Last name stack vertically */
   }
   .contact-form-wrapper {
     padding: 2.4rem 1.6rem;
   }
 
-  /* Footer */
+  /* Footer: single column */
   .footer-container {
     grid-template-columns: 1fr;
     text-align: center;
   }
-
   .footer-container .content_1 {
-    grid-column: auto;
+    grid-column: auto; /* Reset the span */
+  }
+
+  /* Reduce body padding on mobile */
+  body {
+    padding: 0 1.2rem;
+  }
+
+  /* Cards become fluid width on mobile */
+  .cards {
+    width: auto;
+    max-width: 100%;
   }
 }
 
-/* 480px — Small phones */
-@media screen and (max-width: 480px) {
-  /* Top bar — only show buttons, hide text */
-  .top_txt .head_txt {
-    display: none;
+/* ─── 600px — Medium phones ─────────────────────────────────── */
+@media screen and (max-width: 600px) {
+  /* Reduce body padding further */
+  body {
+    padding: 0 1.6rem;
   }
+}
 
+/* ─── 480px — Small phones ──────────────────────────────────── */
+@media screen and (max-width: 480px) {
+  /* Top bar: hide the "Free shipping" text, center the buttons */
+  .top_txt .head_txt {
+    display: none; /* Not enough space for text on tiny screens */
+  }
   .top_txt .head {
     justify-content: center;
     padding: 0.8rem 1.6rem;
   }
 
-  /* Navbar */
+  /* Navbar logo slightly smaller */
   .section-navbar .navbar-brand {
-    width: 55%;
+    width: fit-content;
   }
 
+  /* Smaller nav link text on tiny screens */
   .section-navbar .navbar ul li a {
     font-size: 1.2rem;
   }
 
-  /* Auth page */
+  /* Auth form: almost full width on small screens */
   .auth-container {
     margin-top: 6rem;
-    width: calc(100% - 3.2rem);
+    width: calc(100% - 3.2rem); /* Full width minus 32px total margin */
     max-width: 420px;
   }
 
-  /* Page hero */
+  /* Page hero text adjustments */
   .page-hero h1 {
     font-size: 2.8rem;
   }
 
-  /* Hero section */
+  /* Hero heading shrinks on small phones */
   .section-hero .hero-heading {
     font-size: 3.6rem;
   }
 
-  /* Hero text wave fix */
+  /* Extra bottom space before the wave shape */
   .section-hero .hero-para {
     margin-bottom: 5.6rem;
   }
 
+  /* Add bottom padding to the hero on mobile */
   main .section-hero {
     padding-bottom: 6rem;
   }
 
+  /* Shorter wave shape on mobile */
   .custom-shape-divider-bottom-1696038172 svg {
     height: 5.6rem;
   }
 
-  /* Contact form */
+  /* Reduce form and card padding on tiny screens */
   .contact-form-wrapper {
     padding: 2rem 1.2rem;
   }
 
-  /* About */
   .developer-card {
     padding: 2rem 1.2rem;
   }
 
-  /* Footer */
+  /* Tighter footer padding */
   .footer-container {
     padding: 3.2rem 0;
   }
