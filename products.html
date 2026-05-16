@@ -17,7 +17,29 @@
       href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Jost:wght@300;400;500;700&family=Poppins:wght@200;300;400;600&family=Quicksand:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+
+    <link rel="preload" href="./src/style.css" as="style" />
     <link rel="stylesheet" href="./src/style.css" />
+
+    <script>
+      // Read the current user from localStorage RIGHT NOW,
+      // before the page is visually rendered.
+      // JSON.parse() converts the stored text back into a JS object.
+      // If nothing is stored, this returns null (nobody logged in).
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+      // If a user IS logged in, immediately add the "logged-in" class
+      // to the <html> element. CSS rules like:
+      //   html.logged-in #signInLink { display: none; }
+      // will then apply INSTANTLY when the page renders.
+      if (currentUser) {
+        document.documentElement.classList.add("logged-in");
+        // ↑ document.documentElement refers to the <html> tag
+      }
+      // If no user is logged in, we do nothing — the default CSS
+      // (logged-out state) is already correct. No class needed.
+    </script>
+
     <script type="module" src="./src/main.js" defer></script>
     <script type="module" src="./src/auth.js" defer></script>
   </head>
@@ -41,18 +63,19 @@
               id="signUpLink"
               >SIGN UP</a
             >
-            <span
-              class="welcomeUser"
-              id="welcomeUser"
-              style="display: none"
-            ></span>
-            <button
-              id="logoutBtn"
-              class="btn-sign_in_up_header"
-              style="display: none"
-            >
-              Logout
-            </button>
+            <span class="welcomeUser"></span>
+            <script>
+              (function () {
+                const user = JSON.parse(localStorage.getItem("currentUser"));
+                if (user) {
+                  const span = document.currentScript.previousElementSibling;
+                  span.textContent =
+                    user.username.charAt(0).toUpperCase() +
+                    user.username.slice(1);
+                }
+              })();
+            </script>
+            <button id="logoutBtn" class="btn-sign_in_up_header">Logout</button>
           </div>
         </div>
       </section>
@@ -81,8 +104,29 @@
                 href="addToCart.html"
                 class="nav-link add-to-cart-button"
                 id="cartValue"
-                ><i class="fa-solid fa-cart-shopping"> 0 </i></a
               >
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count"></span>
+                <script>
+                  (function () {
+                    const user = JSON.parse(
+                      localStorage.getItem("currentUser"),
+                    );
+                    if (!user) return;
+                    const key = "cart_" + user.email;
+                    const cart = JSON.parse(localStorage.getItem(key) || "[]");
+                    const total = cart.reduce(
+                      (sum, item) => sum + (item.quantity || 1),
+                      0,
+                    );
+                    const span = document.currentScript.previousElementSibling;
+                    span.textContent = total;
+
+                    const cartIcon = document.getElementById("cartValue");
+                    if (cartIcon) cartIcon.style.visibility = "visible";
+                  })();
+                </script>
+              </a>
             </li>
           </ul>
         </nav>
