@@ -3,4 +3,6 @@ import { showProductContainer } from "./homeProductCards";
 
 // console.log(products);
 //Define a function named 'showProductContainer' that takes an array of products as input.
-showProductContainer(products);
+document.addEventListener("DOMContentLoaded", () => {
+  showProductContainer(products);
+});
