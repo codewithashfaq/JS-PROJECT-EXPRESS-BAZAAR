@@ -1422,7 +1422,7 @@ footer {
     box-shadow 0.18s ease;
 }
 
-.#productCartContainer .remove-to-cart-button:hover {
+#productCartContainer .remove-to-cart-button:hover {
   box-shadow:
     inset 0px 1px 4px rgba(0, 0, 0, 0.16),
     inset 0px 0px 0px 3px rgb(51, 51, 51);
