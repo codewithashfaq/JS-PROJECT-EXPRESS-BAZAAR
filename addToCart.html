@@ -51,9 +51,12 @@
       if (currentUser) {
         document.documentElement.classList.add("logged-in");
         // ↑ document.documentElement refers to the <html> tag
+      } else {
+        document.documentElement.classList.add("logged-out");
+        //   Mirrors the logged-in class above — set before first paint so
+        //   CSS instantly locks in the correct logged-out UI. No JS needed later,
+        //   no DOM change after render = zero flicker.
       }
-      // If no user is logged in, we do nothing — the default CSS
-      // (logged-out state) is already correct. No class needed.
     </script>
 
     <script type="module" src="./src/auth.js" defer></script>
@@ -132,22 +135,24 @@
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span class="cart-count"></span>
                 <script>
+                  /* Cart count: show 0 if logged out, actual count if logged in.
+     Never touch visibility — CSS handles that consistently. */
                   (function () {
                     const user = JSON.parse(
                       localStorage.getItem("currentUser"),
                     );
-                    if (!user) return;
+                    const span = document.currentScript.previousElementSibling;
+                    if (!user) {
+                      span.textContent = "0";
+                      return;
+                    }
                     const key = "cart_" + user.email;
                     const cart = JSON.parse(localStorage.getItem(key) || "[]");
                     const total = cart.reduce(
                       (sum, item) => sum + (item.quantity || 1),
                       0,
                     );
-                    const span = document.currentScript.previousElementSibling;
                     span.textContent = total;
-
-                    const cartIcon = document.getElementById("cartValue");
-                    if (cartIcon) cartIcon.style.visibility = "visible";
                   })();
                 </script>
               </a>
