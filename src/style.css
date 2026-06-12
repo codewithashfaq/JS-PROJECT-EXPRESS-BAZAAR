@@ -718,6 +718,20 @@ html.logged-in .welcomeUser {
   display: inline;
 }
 
+/* ─── LOGGED-OUT STATE — instant, no flicker ─── */
+html.logged-out #logoutBtn {
+  display: none !important;
+}
+html.logged-out .welcomeUser {
+  display: none !important;
+}
+html.logged-out #signInLink {
+  display: inline !important;
+}
+html.logged-out #signUpLink {
+  display: inline !important;
+}
+
 /* ============================================================
    8. HERO SECTION (HOME PAGE)
    ─────────────────────────────────────────────────────────────
@@ -1294,7 +1308,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  visibility: hidden; /* Hidden by default — JS shows it when cart has items */
+  visibility: visible; /* Hidden by default — JS shows it when cart has items */
 }
 
 /* The number inside the cart icon badge */
