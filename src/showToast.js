@@ -18,6 +18,9 @@ export const showToast = (operation, productID = null, message = null) => {
   } else if (operation === "delete") {
     toast.classList.add("toast-error");
     toast.textContent = `Product #${productID} removed from your cart`;
+  } else if (operation === "checkout") {
+    toast.classList.add("toast-success");
+    toast.textContent = `Order placed successfully! 🎉`;
   } else {
     // fallback case
     toast.textContent = message || `Action completed`;
