@@ -1507,6 +1507,8 @@ main .cart-title {
 main > .container {
   padding-top: 4rem;
   padding-bottom: 4rem;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
 }
 
 /* ─── EMPTY CART STATE ────────────────────────────────────── */
@@ -1566,11 +1568,19 @@ main > .container {
 /* ─── CART PAGE LAYOUT (when cart HAS items) ─────────────── */
 /* Two-column layout: cart items left, order summary right */
 .cart-page {
-  display: grid;
-  grid-template-columns: 1fr 32rem;
-  /* 1fr = takes remaining space, 32rem = fixed summary panel width */
+  display: flex;
+  flex-direction: column; /* Mobile first — stack vertically */
   gap: 2.6rem;
-  align-items: start; /* Align to top, not stretch */
+  align-items: stretch;
+}
+
+/* Desktop layout */
+@media screen and (min-width: 769px) {
+  .cart-page {
+    display: grid;
+    grid-template-columns: 1fr 32rem;
+    align-items: start;
+  }
 }
 
 /* Left column — the list of cart items */
@@ -2338,16 +2348,6 @@ main > .container {
     grid-column: 4 / -1;
   }
 
-  /* Cart summary moves below the cart items (single column) */
-  .cart-page {
-    grid-template-columns: 1fr;
-  }
-
-  /* Summary panel no longer sticky — just flows normally */
-  .cart-summary {
-    position: static;
-  }
-
   /* Why Choose Us: images shrink */
   .section-why--choose img {
     width: 30%;
@@ -2434,6 +2434,15 @@ main > .container {
     width: auto;
     max-width: 100%;
   }
+
+  .cart-main .container {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+
+  #productCartContainer .cards {
+    padding: 1.2rem;
+  }
 }
 
 /* ─── 600px — Medium phones ─────────────────────────────────── */
@@ -2509,5 +2518,10 @@ main > .container {
   /* Tighter footer padding */
   .footer-container {
     padding: 3.2rem 0;
+  }
+
+  .cart-main .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
