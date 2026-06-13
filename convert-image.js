@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 
 const inputDir = "./public/images";
-const outputDir = "./public/images-webp";
+const outputDir = "./public/images";
 
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
