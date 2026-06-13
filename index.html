@@ -5,38 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Express Bazaar | Home</title>
 
-    <link
-      rel="preload"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-      as="style"
-    />
+    <!-- Font Awesome — non-blocking -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      media="print"
+      onload="this.media = 'all'"
       integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      />
+    </noscript>
 
+    <!-- Google Fonts — optimized -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Jost:wght@300;400;500;700&family=Poppins:wght@200;300;400;600&family=Quicksand:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
-      as="style"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Jost:wght@300;400;500;700&family=Poppins:wght@200;300;400;600&family=Quicksand:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@700&family=Urbanist:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <link rel="preload" href="./src/style.css" as="style" />
-    <link rel="stylesheet" href="./src/style.css" />
+    <!-- Hero image preload -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/heroImage.webp"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/images/express-bazaar-logo.webp"
+      fetchpriority="high"
+    />
 
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./src/style.css" />
     <script>
       // Read the current user from localStorage RIGHT NOW,
       // before the page is visually rendered.
@@ -107,7 +118,7 @@
         <div class="navbar-brand">
           <a href="index.html">
             <img
-              src="./public/images/express-bazaar-logo.png"
+              src="/images/express-bazaar-logo.webp"
               alt="express bazaar logo"
             />
           </a>
@@ -133,7 +144,17 @@
                 class="nav-link add-to-cart-button"
                 id="cartValue"
               >
-                <i class="fa-solid fa-cart-shopping"></i>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 576 512"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                  />
+                </svg>
                 <span class="cart-count"></span>
                 <script>
                   /* Cart count: show 0 if logged out, actual count if logged in.
@@ -184,15 +205,15 @@
               <a href="products.html" class="btn">Explore Our Products</a>
             </div>
           </div>
-          <div
-            class="section-hero-image"
-            data-aos="fade-up"
-            data-aos-delay="600"
-          >
+          <div class="section-hero-image">
             <figure>
               <img
-                src="./public/images/heroSection.svg"
-                alt="coding languages using html css js"
+                src="/images/heroImage.webp"
+                alt="hero gadgets"
+                width="600"
+                height="500"
+                fetchpriority="high"
+                loading="eager"
               />
             </figure>
           </div>
@@ -236,7 +257,13 @@
             <a href="#">Show now</a>
           </div>
           <div class="extra-img extra-laptop">
-            <img src="./public/images/laptop.png" alt="" />
+            <img
+              src="/images/laptop.webp"
+              alt="laptop"
+              width="200"
+              height="200"
+              loading="lazy"
+            />
           </div>
         </div>
 
@@ -247,7 +274,13 @@
             <a href="#">Show now</a>
           </div>
           <div class="extra-img">
-            <img src="./public/images/headphoneEcom.png" alt="" />
+            <img
+              src="/images/headphoneEcom.webp"
+              alt="headphone"
+              width="200"
+              height="200"
+              loading="lazy"
+            />
           </div>
         </div>
 
@@ -258,7 +291,13 @@
             <a href="#">Show now</a>
           </div>
           <div class="extra-img">
-            <img src="./public/images/mobiles.png" alt="" />
+            <img
+              src="/images/mobiles.webp"
+              alt="mobile"
+              width="200"
+              height="200"
+              loading="lazy"
+            />
           </div>
         </div>
       </div>
@@ -360,7 +399,17 @@
             </div>
           </div>
           <button class="add-to-cart-button">
-            <i class="fa-solid fa-cart-shopping"></i>Add To Cart
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 576 512"
+              fill="currentColor"
+            >
+              <path
+                d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+              /></svg
+            >Add To Cart
           </button>
         </article>
       </div>
@@ -382,7 +431,7 @@
 
       <div class="container grid grid-three--cols">
         <div class="choose-left-div text-align--right">
-          <div class="why-choose--div" data-aos="zoom-in-up" data-aos-delay="0">
+          <div class="why-choose--div">
             <p class="common-text--highlight">1</p>
             <h3 class="section-common--title">Wide Selection</h3>
             <p>
@@ -392,11 +441,7 @@
             </p>
           </div>
 
-          <div
-            class="why-choose--div"
-            data-aos="zoom-in-up"
-            data-aos-delay="300"
-          >
+          <div class="why-choose--div">
             <p class="common-text--highlight">2</p>
             <h3 class="section-common--title">Quality Assurance</h3>
             <p>
@@ -406,11 +451,7 @@
             </p>
           </div>
 
-          <div
-            class="why-choose--div"
-            data-aos="zoom-in-up"
-            data-aos-delay="600"
-          >
+          <div class="why-choose--div">
             <p class="common-text--highlight">3</p>
             <h3 class="section-common--title">Competitive Prices</h3>
             <p>
@@ -420,20 +461,16 @@
             </p>
           </div>
         </div>
-        <div class="choose-center-div" data-aos="zoom-in" data-aos-delay="300">
+        <div class="choose-center-div">
           <figure>
             <img
-              src="./public/images/ecompost-1.png"
+              src="/images/ecompost-1.webp"
               alt="express bazaar home page "
             />
           </figure>
         </div>
         <div class="choose-right-div">
-          <div
-            class="why-choose--div text-align--left"
-            data-aos="zoom-in-up"
-            data-aos-delay="0"
-          >
+          <div class="why-choose--div text-align--left">
             <p class="common-text--highlight">4</p>
             <h3 class="section-common--title">Expert Guidance</h3>
             <p>
@@ -443,11 +480,7 @@
             </p>
           </div>
 
-          <div
-            class="why-choose--div text-align--left"
-            data-aos="zoom-in-up"
-            data-aos-delay="300"
-          >
+          <div class="why-choose--div text-align--left">
             <p class="common-text--highlight">5</p>
             <h3 class="section-common--title">Convenient Shopping</h3>
             <p>
@@ -458,11 +491,7 @@
             </p>
           </div>
 
-          <div
-            class="why-choose--div text-align--left"
-            data-aos="zoom-in-up"
-            data-aos-delay="600"
-          >
+          <div class="why-choose--div text-align--left">
             <p class="common-text--highlight">6</p>
             <h3 class="section-common--title">Excellent Service</h3>
             <p>
@@ -483,7 +512,7 @@
     <footer class="section-footer">
       <div class="footer-container container">
         <div class="content_1">
-          <img src="./public/images/express-bazaar-logo.png" alt="logo" />
+          <img src="/images/express-bazaar-logo.webp" alt="logo" />
           <p>
             Welcome to Express Bazaar, your ultimate destination for
             cutting-edge gadgets!
@@ -509,7 +538,7 @@
           <p>Be the first to know about new<br />arrivals, sales & promos!</p>
           <div class="f-mail">
             <input type="email" placeholder="Your Email" />
-            <i class="bx bx-envelope"></i>
+            <button type="button" class="newsletter-btn">→</button>
           </div>
           <hr />
         </div>
